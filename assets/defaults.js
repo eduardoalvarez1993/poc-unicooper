@@ -55,7 +55,7 @@ const defaults = {
     { name: "Auditoria in loco", category: "Auditoria", description: "Convênios que necessitam de auditoria in loco em Betim, Salvador e demais unidades.", link: "https://unicooper.coop.br/convenios/", active: true }
   ],
   calendar: [
-    { month: "Calendário de Repasse 2026", date: "Consulte a imagem oficial", note: "O site atual publica o calendário em formato de imagem. Cadastre as datas no CMS para exibir a tabela completa." }
+    { month: "Calendário de Repasse 2026", date: "Consulte a Unicooper", note: "As datas de repasse serão divulgadas conforme o calendário oficial da cooperativa." }
   ]
 };
 

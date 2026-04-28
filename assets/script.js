@@ -23,7 +23,7 @@ async function init() {
   try {
     await withTimeout(loadData(), 3500);
   } catch (error) {
-    console.warn("Firestore indisponivel. Usando conteudo local de fallback.", error);
+    console.warn("Conteudo remoto indisponivel. Usando conteudo local de fallback.", error);
     loadFallbackData();
   }
   renderPage();
@@ -33,7 +33,7 @@ function withTimeout(promise, timeoutMs) {
   return Promise.race([
     promise,
     new Promise((_, reject) => {
-      window.setTimeout(() => reject(new Error("Tempo limite ao carregar Firestore.")), timeoutMs);
+      window.setTimeout(() => reject(new Error("Tempo limite ao carregar conteudo remoto.")), timeoutMs);
     })
   ]);
 }
@@ -105,11 +105,8 @@ function renderSkeletons() {
     `).join("");
   }
 
-  document.querySelectorAll("[data-content], [data-contact]").forEach((element) => {
-    if (!element.textContent.trim() || element.textContent.includes("Carregando")) {
-      element.innerHTML = '<span class="skeleton-line"></span><span class="skeleton-line short"></span>';
-    }
-  });
+  document.querySelectorAll("[data-content], [data-contact]").forEach(renderTextSkeleton);
+  document.querySelectorAll("[data-content-lines]").forEach(renderTextSkeleton);
 }
 
 function renderCardSkeleton(selector, count) {
@@ -124,6 +121,18 @@ function renderCardSkeleton(selector, count) {
       <span class="skeleton-line short"></span>
     </article>
   `).join("");
+}
+
+function renderTextSkeleton(element) {
+  if (element.textContent.trim() && !element.textContent.includes("Carregando")) return;
+
+  const tag = element.tagName.toLowerCase();
+  const titleClass = tag === "h1" || tag === "h2" || tag === "h3" ? " title" : "";
+  const lineCount = tag === "h1" ? 2 : 1;
+  element.innerHTML = Array.from({ length: lineCount }, (_, index) => {
+    const shortClass = index === lineCount - 1 ? " short" : "";
+    return `<span class="skeleton-line${titleClass}${shortClass}"></span>`;
+  }).join("");
 }
 
 function bindText() {

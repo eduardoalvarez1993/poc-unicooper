@@ -551,7 +551,8 @@ textarea {
 }
 
 .skeleton-line.title {
-  height: 22px;
+  height: 0.82em;
+  max-width: 680px;
   width: 72%;
 }
 
