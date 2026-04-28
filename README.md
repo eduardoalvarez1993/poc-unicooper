@@ -8,8 +8,10 @@ Site institucional com CMS simples usando HTML, CSS, JavaScript puro, Firebase H
 - `institucional.html`: Quem somos, missão, visão e valores
 - `vantagens.html`: Benefícios em cards
 - `convenios.html`: Convênios ativos com filtro por categoria
+- `area-do-cooperado.html`: Portal, sistema de consultório, documentos e orientações
 - `calendario.html`: Calendário de repasse
 - `contato.html`: Canais oficiais
+- `lgpd.html`: Privacidade, requisição do titular e canal de denúncia
 - `admin.html`: CMS simples sem autenticação
 - `assets/firebase.js`: Configuração do Firebase e exports do Firestore
 - `assets/script.js`: Renderização pública

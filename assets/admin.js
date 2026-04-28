@@ -9,6 +9,7 @@ import {
   updateDoc,
   deleteDoc
 } from "./firebase.js";
+import { defaults } from "./defaults.js";
 
 const contentFields = [
   "homeHeroTitle",
@@ -16,59 +17,47 @@ const contentFields = [
   "homeAboutTitle",
   "homeAboutText",
   "cooperativeCta",
+  "business",
   "whoWeAre",
   "mission",
   "vision",
   "values",
+  "institutionalText",
+  "boardTerm",
+  "boardMembers",
   "memberAreaText",
-  "portalUrl"
+  "portalUrl",
+  "clinicSystemUrl",
+  "howToJoinText",
+  "legalEntityText",
+  "transferTrackingText",
+  "clinicText",
+  "documentsText",
+  "sacText",
+  "lgpdText",
+  "lgpdRequestUrl",
+  "lgpdReportUrl"
 ];
 
-const contactFields = ["address", "phone", "whatsapp", "email"];
+const contactFields = ["address", "phone", "whatsapp", "email", "cnpj", "hours"];
 
-const defaults = {
-  siteContent: {
-    homeHeroTitle: "Cuidado cooperativo para uma vida mais tranquila",
-    homeHeroText: "A Unicooper conecta cooperados a benefícios, convênios e informações essenciais com transparência, proximidade e atendimento humano.",
-    homeAboutTitle: "Sobre a Unicooper",
-    homeAboutText: "Somos uma cooperativa voltada a fortalecer relações, ampliar vantagens e simplificar o acesso a serviços importantes para nossos cooperados.",
-    cooperativeCta: "Quero me cooperar",
-    whoWeAre: "A Unicooper nasceu para aproximar pessoas de soluções confiáveis, com foco em cooperação, saúde financeira e benefícios reais no dia a dia.",
-    mission: "Promover desenvolvimento e segurança para cooperados por meio de serviços acessíveis, relacionamento próximo e gestão responsável.",
-    vision: "Ser referência regional em cooperativismo moderno, transparente e orientado ao bem-estar dos cooperados.",
-    values: "Cooperação, ética, transparência, acolhimento, responsabilidade e melhoria contínua.",
-    memberAreaText: "A área do cooperado reúne serviços, documentos e informações pessoais em ambiente externo seguro.",
-    portalUrl: "https://portal.unicooper.example.com"
-  },
-  contact: {
-    address: "Av. Central, 1000 - Centro",
-    phone: "(00) 0000-0000",
-    whatsapp: "5500000000000",
-    email: "contato@unicooper.com.br"
-  },
-  benefits: [
-    { title: "Atendimento próximo", description: "Equipe preparada para orientar cooperados com clareza e agilidade." },
-    { title: "Convênios selecionados", description: "Parcerias úteis em saúde, bem-estar, educação e serviços." },
-    { title: "Informação transparente", description: "Calendários, contatos e comunicados sempre acessíveis." }
-  ],
-  agreements: [
-    { name: "Clínica Vida Plena", category: "Saúde", description: "Condições especiais em consultas e exames.", link: "https://example.com", active: true },
-    { name: "Instituto Aprender", category: "Educação", description: "Descontos em cursos livres e capacitações.", link: "https://example.com", active: true },
-    { name: "Farmácia Essencial", category: "Bem-estar", description: "Benefícios em medicamentos e produtos de cuidado.", link: "https://example.com", active: true }
-  ],
-  calendar: [
-    { month: "Janeiro", date: "10/01/2026", note: "Repasse regular" },
-    { month: "Fevereiro", date: "10/02/2026", note: "Sujeito a compensação bancária" },
-    { month: "Março", date: "10/03/2026", note: "Repasse regular" }
-  ]
-};
 
 document.addEventListener("DOMContentLoaded", initAdmin);
 
 async function initAdmin() {
   bindForms();
-  await ensureInitialData();
-  await loadAdminData();
+  try {
+    await ensureInitialData();
+    await loadAdminData();
+  } catch (error) {
+    console.warn("Firestore indisponivel no admin.", error);
+    showStatus("Nao foi possivel conectar ao Firestore. Verifique se o banco esta ativo, as regras da POC e a conexao.");
+    fillForm("[data-content-form]", contentFields, defaults.siteContent);
+    fillForm("[data-contact-form]", contactFields, defaults.contact);
+    renderOfflineList("benefits", defaults.benefits, renderBenefitItem);
+    renderOfflineList("agreements", defaults.agreements, renderAgreementItem);
+    renderOfflineList("calendar", defaults.calendar, renderCalendarItem);
+  }
 }
 
 function bindForms() {
@@ -77,6 +66,11 @@ function bindForms() {
   document.querySelector("[data-benefit-form]").addEventListener("submit", saveBenefit);
   document.querySelector("[data-agreement-form]").addEventListener("submit", saveAgreement);
   document.querySelector("[data-calendar-form]").addEventListener("submit", saveCalendar);
+}
+
+function renderOfflineList(collectionName, items, renderer) {
+  const container = document.querySelector(`[data-${collectionName}-list]`);
+  container.innerHTML = items.map((item, index) => renderer({ id: `offline-${index}`, ...item })).join("");
 }
 
 async function loadAdminData() {
@@ -95,8 +89,12 @@ async function ensureInitialData() {
   const contentSnap = await getDoc(contentRef);
   const contactSnap = await getDoc(contactRef);
 
-  if (!contentSnap.exists()) await setDoc(contentRef, defaults.siteContent);
-  if (!contactSnap.exists()) await setDoc(contactRef, defaults.contact);
+  if (!contentSnap.exists() || contentSnap.data().seedVersion !== defaults.siteContent.seedVersion) {
+    await setDoc(contentRef, defaults.siteContent, { merge: true });
+  }
+  if (!contactSnap.exists() || contactSnap.data().seedVersion !== defaults.contact.seedVersion) {
+    await setDoc(contactRef, defaults.contact, { merge: true });
+  }
 
   await seedCollection("benefits", defaults.benefits);
   await seedCollection("agreements", defaults.agreements);
@@ -105,9 +103,25 @@ async function ensureInitialData() {
 
 async function seedCollection(collectionName, items) {
   const snap = await getDocs(collection(db, collectionName));
-  if (!snap.empty) return;
+  const docs = snap.docs.map((item) => ({ id: item.id, ...item.data() }));
+  const shouldReplace = hasOldSeedData(collectionName, docs);
+  if (!snap.empty && !shouldReplace) return;
+
+  if (shouldReplace) {
+    await Promise.all(snap.docs.map((item) => deleteDoc(doc(db, collectionName, item.id))));
+  }
 
   await Promise.all(items.map((item) => addDoc(collection(db, collectionName), item)));
+}
+
+function hasOldSeedData(collectionName, items) {
+  const markers = {
+    benefits: (item) => item.title === "Atendimento próximo",
+    agreements: (item) => item.name === "Clínica Vida Plena",
+    calendar: (item) => item.month === "Janeiro" && item.note === "Repasse regular"
+  };
+
+  return Boolean(markers[collectionName] && items.some(markers[collectionName]));
 }
 
 async function loadContent() {
