@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Convênios | Unicooper</title>
+  <meta name="description" content="Convênios ativos disponíveis para cooperados Unicooper.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="index.html"><span class="brand-mark">U</span><span>Unicooper</span></a>
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" data-nav-toggle><span></span></button>
+      <div class="nav-links" data-nav-links>
+        <a href="index.html">Home</a>
+        <a href="institucional.html">Institucional</a>
+        <a href="vantagens.html">Vantagens</a>
+        <a class="active" href="convenios.html">Convênios</a>
+        <a href="calendario.html">Calendário</a>
+        <a href="contato.html">Contato</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Convênios</p>
+          <h1>Parcerias ativas para ampliar o cuidado</h1>
+          <p class="lead">Filtre por categoria e acesse os parceiros cadastrados como ativos no CMS.</p>
+        </div>
+        <aside class="hero-panel">
+          <p>Convênios inativos permanecem no banco, mas não aparecem na área pública.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Parceiros</p>
+          <h2>Convênios disponíveis</h2>
+        </div>
+        <div class="filters" data-agreement-filters></div>
+        <div class="grid cards" data-agreements></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <strong>Unicooper</strong>
+      <p>Parcerias editáveis com filtro por categoria.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/script.js"></script>
+</body>
+</html>

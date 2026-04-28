@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMS | Unicooper</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <div class="admin-top">
+      <a class="brand" href="index.html"><span class="brand-mark">U</span><span>CMS Unicooper</span></a>
+      <div class="actions">
+        <a class="button secondary" href="index.html">Ver site</a>
+      </div>
+    </div>
+
+    <p class="status" data-status></p>
+
+    <section class="admin-grid">
+      <article class="admin-panel wide">
+        <div class="section-head">
+          <p class="eyebrow">Conteúdo geral</p>
+          <h2>Home, institucional e área do cooperado</h2>
+        </div>
+        <form class="form-grid" data-content-form>
+          <label>Título do hero
+            <input name="homeHeroTitle" type="text">
+          </label>
+          <label>Texto do hero
+            <textarea name="homeHeroText"></textarea>
+          </label>
+          <label>Título sobre a Unicooper
+            <input name="homeAboutTitle" type="text">
+          </label>
+          <label>Texto sobre a Unicooper
+            <textarea name="homeAboutText"></textarea>
+          </label>
+          <label>Texto do CTA principal
+            <input name="cooperativeCta" type="text">
+          </label>
+          <label>Quem somos
+            <textarea name="whoWeAre"></textarea>
+          </label>
+          <label>Missão
+            <textarea name="mission"></textarea>
+          </label>
+          <label>Visão
+            <textarea name="vision"></textarea>
+          </label>
+          <label>Valores
+            <textarea name="values"></textarea>
+          </label>
+          <label>Texto da área do cooperado
+            <textarea name="memberAreaText"></textarea>
+          </label>
+          <label>URL do portal do cooperado
+            <input name="portalUrl" type="url" placeholder="https://">
+          </label>
+          <button class="button primary" type="submit">Salvar conteúdo</button>
+        </form>
+      </article>
+
+      <article class="admin-panel">
+        <div class="section-head">
+          <p class="eyebrow">Vantagens</p>
+          <h2>Adicionar ou editar</h2>
+        </div>
+        <form class="form-grid" data-benefit-form>
+          <input name="id" type="hidden">
+          <label>Título
+            <input name="title" type="text" required>
+          </label>
+          <label>Descrição
+            <textarea name="description" required></textarea>
+          </label>
+          <button class="button primary" type="submit">Salvar vantagem</button>
+        </form>
+        <div class="admin-list" data-benefits-list></div>
+      </article>
+
+      <article class="admin-panel">
+        <div class="section-head">
+          <p class="eyebrow">Convênios</p>
+          <h2>Parceiros e status</h2>
+        </div>
+        <form class="form-grid" data-agreement-form>
+          <input name="id" type="hidden">
+          <label>Nome
+            <input name="name" type="text" required>
+          </label>
+          <label>Categoria
+            <input name="category" type="text" required>
+          </label>
+          <label>Descrição
+            <textarea name="description" required></textarea>
+          </label>
+          <label>Link externo
+            <input name="link" type="url" placeholder="https://">
+          </label>
+          <label>
+            <span>Ativo</span>
+            <input name="active" type="checkbox" checked>
+          </label>
+          <button class="button primary" type="submit">Salvar convênio</button>
+        </form>
+        <div class="admin-list" data-agreements-list></div>
+      </article>
+
+      <article class="admin-panel">
+        <div class="section-head">
+          <p class="eyebrow">Calendário</p>
+          <h2>Datas de repasse</h2>
+        </div>
+        <form class="form-grid" data-calendar-form>
+          <input name="id" type="hidden">
+          <label>Mês
+            <input name="month" type="text" required>
+          </label>
+          <label>Data
+            <input name="date" type="text" placeholder="10/01/2026" required>
+          </label>
+          <label>Observação
+            <textarea name="note"></textarea>
+          </label>
+          <button class="button primary" type="submit">Salvar data</button>
+        </form>
+        <div class="admin-list" data-calendar-list></div>
+      </article>
+
+      <article class="admin-panel">
+        <div class="section-head">
+          <p class="eyebrow">Contato e links</p>
+          <h2>Canais oficiais</h2>
+        </div>
+        <form class="form-grid" data-contact-form>
+          <label>Endereço
+            <input name="address" type="text">
+          </label>
+          <label>Telefone
+            <input name="phone" type="text">
+          </label>
+          <label>WhatsApp com DDI
+            <input name="whatsapp" type="text" placeholder="5511999999999">
+          </label>
+          <label>E-mail
+            <input name="email" type="email">
+          </label>
+          <button class="button primary" type="submit">Salvar contato</button>
+        </form>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="assets/admin.js"></script>
+</body>
+</html>

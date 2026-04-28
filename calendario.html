@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendário de Repasse | Unicooper</title>
+  <meta name="description" content="Calendário de repasse da Unicooper.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="index.html"><span class="brand-mark">U</span><span>Unicooper</span></a>
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" data-nav-toggle><span></span></button>
+      <div class="nav-links" data-nav-links>
+        <a href="index.html">Home</a>
+        <a href="institucional.html">Institucional</a>
+        <a href="vantagens.html">Vantagens</a>
+        <a href="convenios.html">Convênios</a>
+        <a class="active" href="calendario.html">Calendário</a>
+        <a href="contato.html">Contato</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Calendário de Repasse</p>
+          <h1>Datas de repasse em uma tabela clara</h1>
+          <p class="lead">As informações abaixo são carregadas diretamente do Firestore.</p>
+        </div>
+        <aside class="hero-panel">
+          <p>Use o CMS para adicionar meses, datas e observações sempre que houver atualização.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Mês</th>
+                <th>Data</th>
+                <th>Observação</th>
+              </tr>
+            </thead>
+            <tbody data-calendar>
+              <tr><td colspan="3">Carregando calendário...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <strong>Unicooper</strong>
+      <p>Calendário editável no Firestore.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/script.js"></script>
+</body>
+</html>
