@@ -535,6 +535,55 @@ textarea {
   padding: 16px 0;
 }
 
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-line,
+.skeleton-pill {
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+  background: linear-gradient(90deg, rgba(37, 48, 45, 0.08), rgba(37, 48, 45, 0.15), rgba(37, 48, 45, 0.08));
+  background-size: 220% 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.skeleton-line {
+  height: 14px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.skeleton-line.title {
+  height: 22px;
+  width: 72%;
+}
+
+.skeleton-line.short {
+  width: 46%;
+}
+
+.skeleton-pill {
+  border-radius: 999px;
+  height: 24px;
+  margin-bottom: 16px;
+  width: 92px;
+}
+
+.skeleton-row .skeleton-line {
+  margin-top: 0;
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
 @media (min-width: 760px) {
   .nav-toggle {
     display: none;

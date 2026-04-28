@@ -3,10 +3,7 @@ import {
   collection,
   doc,
   getDocs,
-  getDoc,
-  setDoc,
-  addDoc,
-  deleteDoc
+  getDoc
 } from "./firebase.js";
 import { defaults } from "./defaults.js";
 
@@ -22,14 +19,23 @@ document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
   setupNavigation();
+  renderSkeletons();
   try {
-    await ensureInitialData();
-    await loadData();
+    await withTimeout(loadData(), 3500);
   } catch (error) {
     console.warn("Firestore indisponivel. Usando conteudo local de fallback.", error);
     loadFallbackData();
   }
   renderPage();
+}
+
+function withTimeout(promise, timeoutMs) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      window.setTimeout(() => reject(new Error("Tempo limite ao carregar Firestore.")), timeoutMs);
+    })
+  ]);
 }
 
 function setupNavigation() {
@@ -40,47 +46,6 @@ function setupNavigation() {
   toggle.addEventListener("click", () => {
     links.classList.toggle("open");
   });
-}
-
-async function ensureInitialData() {
-  const contentRef = doc(db, "siteContent", "main");
-  const contactRef = doc(db, "contact", "main");
-  const contentSnap = await getDoc(contentRef);
-  const contactSnap = await getDoc(contactRef);
-
-  if (!contentSnap.exists() || contentSnap.data().seedVersion !== defaults.siteContent.seedVersion) {
-    await setDoc(contentRef, defaults.siteContent, { merge: true });
-  }
-  if (!contactSnap.exists() || contactSnap.data().seedVersion !== defaults.contact.seedVersion) {
-    await setDoc(contactRef, defaults.contact, { merge: true });
-  }
-
-  await seedCollection("benefits", defaults.benefits);
-  await seedCollection("agreements", defaults.agreements);
-  await seedCollection("calendar", defaults.calendar);
-}
-
-async function seedCollection(name, items) {
-  const snap = await getDocs(collection(db, name));
-  const docs = mapDocs(snap);
-  const shouldReplace = hasOldSeedData(name, docs);
-  if (!snap.empty && !shouldReplace) return;
-
-  if (shouldReplace) {
-    await Promise.all(snap.docs.map((item) => deleteDoc(doc(db, name, item.id))));
-  }
-
-  await Promise.all(items.map((item) => addDoc(collection(db, name), item)));
-}
-
-function hasOldSeedData(name, items) {
-  const markers = {
-    benefits: (item) => item.title === "Atendimento próximo",
-    agreements: (item) => item.name === "Clínica Vida Plena",
-    calendar: (item) => item.month === "Janeiro" && item.note === "Repasse regular"
-  };
-
-  return Boolean(markers[name] && items.some(markers[name]));
 }
 
 async function loadData() {
@@ -112,6 +77,7 @@ function mapDocs(snapshot) {
 }
 
 function renderPage() {
+  document.body.classList.remove("is-loading");
   bindText();
   bindMultilineText();
   bindLinks();
@@ -121,6 +87,43 @@ function renderPage() {
   renderCalendar();
   renderContact();
   renderMemberArea();
+}
+
+function renderSkeletons() {
+  document.body.classList.add("is-loading");
+  renderCardSkeleton("[data-benefits]", 6);
+  renderCardSkeleton("[data-agreements]", 6);
+
+  const calendar = document.querySelector("[data-calendar]");
+  if (calendar) {
+    calendar.innerHTML = Array.from({ length: 4 }, () => `
+      <tr class="skeleton-row">
+        <td><span class="skeleton-line"></span></td>
+        <td><span class="skeleton-line short"></span></td>
+        <td><span class="skeleton-line"></span></td>
+      </tr>
+    `).join("");
+  }
+
+  document.querySelectorAll("[data-content], [data-contact]").forEach((element) => {
+    if (!element.textContent.trim() || element.textContent.includes("Carregando")) {
+      element.innerHTML = '<span class="skeleton-line"></span><span class="skeleton-line short"></span>';
+    }
+  });
+}
+
+function renderCardSkeleton(selector, count) {
+  const container = document.querySelector(selector);
+  if (!container) return;
+
+  container.innerHTML = Array.from({ length: count }, () => `
+    <article class="card skeleton-card">
+      <span class="skeleton-pill"></span>
+      <span class="skeleton-line title"></span>
+      <span class="skeleton-line"></span>
+      <span class="skeleton-line short"></span>
+    </article>
+  `).join("");
 }
 
 function bindText() {
