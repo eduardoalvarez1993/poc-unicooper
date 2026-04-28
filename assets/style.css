@@ -1,14 +1,14 @@
 :root {
-  --bg: #f7f4ef;
-  --surface: #fffdf9;
-  --surface-soft: #f0ebe2;
-  --ink: #25302d;
-  --muted: #65716d;
-  --brand: #2f806f;
-  --brand-dark: #1f5f53;
-  --accent: #c79a54;
-  --line: rgba(37, 48, 45, 0.12);
-  --shadow: 0 18px 50px rgba(31, 61, 55, 0.12);
+  --bg: #f4f8fb;
+  --surface: #ffffff;
+  --surface-soft: #eaf2f8;
+  --ink: #183650;
+  --muted: #5d7183;
+  --brand: #1871b7;
+  --brand-dark: #183650;
+  --accent: #57a7d8;
+  --line: rgba(24, 54, 80, 0.12);
+  --shadow: 0 18px 50px rgba(24, 54, 80, 0.13);
   --radius: 8px;
   --max: 1160px;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -63,21 +63,17 @@ svg {
 .brand {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: 10px;
   font-weight: 800;
   letter-spacing: 0;
 }
 
 .brand-mark {
-  align-items: center;
-  background: linear-gradient(145deg, var(--brand), #72b5a0);
-  border-radius: 8px;
-  color: white;
-  display: inline-flex;
-  font-size: 18px;
-  height: 42px;
-  justify-content: center;
-  width: 42px;
+  background: transparent;
+  border-radius: 0;
+  height: 46px;
+  object-fit: contain;
+  width: 154px;
 }
 
 .nav-toggle {
@@ -164,8 +160,8 @@ svg {
 
 .hero::before {
   background:
-    radial-gradient(circle at 20% 10%, rgba(199, 154, 84, 0.22), transparent 32%),
-    linear-gradient(135deg, rgba(47, 128, 111, 0.12), rgba(255, 253, 249, 0));
+    radial-gradient(circle at 20% 10%, rgba(87, 167, 216, 0.22), transparent 32%),
+    linear-gradient(135deg, rgba(24, 113, 183, 0.12), rgba(255, 255, 255, 0));
   content: "";
   inset: 0;
   position: absolute;
@@ -246,7 +242,7 @@ p {
 
 .button.primary {
   background: var(--brand);
-  box-shadow: 0 14px 26px rgba(47, 128, 111, 0.24);
+  box-shadow: 0 14px 26px rgba(24, 113, 183, 0.24);
   color: white;
 }
 
@@ -317,9 +313,9 @@ p {
 }
 
 .tag {
-  background: rgba(199, 154, 84, 0.18);
+  background: rgba(24, 113, 183, 0.12);
   border-radius: 999px;
-  color: #84602a;
+  color: var(--brand-dark);
   display: inline-flex;
   font-size: 12px;
   font-weight: 800;
@@ -411,7 +407,7 @@ tr:last-child td {
 }
 
 .footer {
-  background: #25302d;
+  background: var(--brand-dark);
   color: white;
   padding: 34px 20px;
 }

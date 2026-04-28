@@ -9,6 +9,11 @@
       "public/**",
       "**/*.log",
       "**/.*",
+      ".git/**",
+      ".github/**",
+      ".agents/**",
+      ".firebaserc",
+      ".gitignore",
       "**/node_modules/**"
     ],
     "headers": [

@@ -1,4 +1,5 @@
 node_modules/
+.firebase/
 *.log
 package.json
 package-lock.json
