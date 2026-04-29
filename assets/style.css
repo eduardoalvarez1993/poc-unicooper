@@ -730,12 +730,14 @@ tr:last-child td {
   gap: 14px;
   margin: 0 auto;
   max-width: 420px;
+  overflow: hidden;
   padding: 32px;
   width: 100%;
 }
 
 .admin-lock-card .brand-mark {
   height: 50px;
+  max-width: 100%;
   width: 170px;
 }
 
