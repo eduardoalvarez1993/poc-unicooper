@@ -87,7 +87,6 @@ function renderPage() {
   renderAgreementFilters();
   renderCalendar();
   renderContact();
-  renderMemberArea();
 }
 
 function renderSkeletons() {
@@ -399,14 +398,6 @@ function renderContact() {
     const key = element.dataset.contact;
     element.textContent = state.contact[key] || "";
   });
-}
-
-function renderMemberArea() {
-  const visibleUrl = document.querySelector("[data-portal-url]");
-  if (visibleUrl) visibleUrl.textContent = state.content.portalUrl || "";
-
-  const clinicUrl = document.querySelector("[data-clinic-url]");
-  if (clinicUrl) clinicUrl.textContent = state.content.clinicSystemUrl || "";
 }
 
 function onlyDigits(value = "") {
