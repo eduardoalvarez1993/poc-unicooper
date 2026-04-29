@@ -248,7 +248,7 @@ function renderAgreementCard(item) {
         ${item.unit ? `<span>${escapeHtml(item.unit)}</span>` : ""}
       </div>
       ${item.rules ? `<p class="note">${escapeHtml(item.rules)}</p>` : ""}
-      ${item.link ? `<div class="actions"><a class="button secondary" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">Acessar parceiro</a></div>` : ""}
+      ${item.link ? `<div class="actions"><a class="button secondary partner-button" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">Acessar parceiro</a></div>` : ""}
     </article>
   `;
 }
