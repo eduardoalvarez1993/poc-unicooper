@@ -271,33 +271,49 @@ function renderAgreements() {
   container.innerHTML = items.map(renderAgreementCard).join("");
 }
 
-function renderAgreementCard(item) {
-  return `
-    <article class="card">
-      <span class="tag">${escapeHtml(item.category || "Convênio")}</span>
-      ${renderAgreementImage(item)}
-      <h3>${escapeHtml(item.name)}</h3>
-      <p>${escapeHtml(item.description)}</p>
-      <div class="meta-list">
-        ${item.city ? `<span>${escapeHtml(item.city)}</span>` : ""}
-        ${item.unit ? `<span>${escapeHtml(item.unit)}</span>` : ""}
-        <span>Instrumentação: ${item.allowsInstrumentation ? "Sim" : "Não"}</span>
-        <span>Auditoria in loco: ${item.requiresOnsiteAudit ? "Sim" : "Não"}</span>
-      </div>
-      ${item.rules ? `<p class="note">${escapeHtml(item.rules)}</p>` : ""}
-      ${item.link ? `<div class="actions"><a class="button secondary partner-button" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">Acessar parceiro</a></div>` : ""}
-    </article>
-  `;
+function categoryIcon(category) {
+  const c = String(category || "").toLowerCase();
+  if (c.includes("consultório"))
+    return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`;
+  if (c.includes("faturamento"))
+    return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+  if (c.includes("procedimento"))
+    return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`;
+  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`;
 }
 
-function renderAgreementImage(item) {
+function renderAgreementCard(item) {
   const imageUrl = isSafeExternalUrl(item.imageUrl) ? item.imageUrl : "";
-  if (!imageUrl) return '<div class="agreement-media placeholder" aria-hidden="true"></div>';
+  const thumb = imageUrl
+    ? `<figure class="agreement-thumb"><img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(item.name)}" loading="lazy"></figure>`
+    : `<div class="agreement-thumb agreement-thumb--placeholder" aria-hidden="true"></div>`;
+
+  const IC_PIN = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+  const IC_PEOPLE = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+  const IC_TOOL = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`;
+  const IC_CLIP = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>`;
+  const IC_INFO = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+  const IC_EXT = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
 
   return `
-    <figure class="agreement-media">
-      <img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(item.name)}" loading="lazy">
-    </figure>
+    <article class="agreement-card">
+      <span class="tag">${categoryIcon(item.category)}${escapeHtml(item.category || "Convênio")}</span>
+      <div class="agreement-header">
+        ${thumb}
+        <div class="agreement-title">
+          <h3>${escapeHtml(item.name)}</h3>
+          <p>${escapeHtml(item.description)}</p>
+        </div>
+      </div>
+      <div class="meta-list">
+        ${item.city ? `<span class="meta-chip">${IC_PIN}${escapeHtml(item.city)}</span>` : ""}
+        ${item.unit ? `<span class="meta-chip">${IC_PEOPLE}${escapeHtml(item.unit)}</span>` : ""}
+        <span class="meta-chip">${IC_TOOL}Instrumentação: ${item.allowsInstrumentation ? "Sim" : "Não"}</span>
+        <span class="meta-chip">${IC_CLIP}Auditoria in loco: ${item.requiresOnsiteAudit ? "Sim" : "Não"}</span>
+      </div>
+      ${item.rules ? `<div class="agreement-alert">${IC_INFO}<span>${escapeHtml(item.rules)}</span></div>` : ""}
+      ${item.link ? `<div class="actions"><a class="button primary partner-button" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">Acessar parceiro${IC_EXT}</a></div>` : ""}
+    </article>
   `;
 }
 

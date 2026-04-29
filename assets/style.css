@@ -546,37 +546,112 @@ p {
   color: white;
 }
 
-.agreement-media {
+/* Agreement card redesign */
+.agreement-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 18px rgba(24, 54, 80, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.agreement-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+}
+
+.agreement-card .tag {
   align-items: center;
-  aspect-ratio: 16 / 9;
+  display: inline-flex;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.agreement-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+}
+
+.agreement-thumb {
+  align-items: center;
   background: var(--surface-soft);
   border: 1px solid var(--line);
   border-radius: 8px;
   display: flex;
+  flex-shrink: 0;
+  height: 72px;
   justify-content: center;
-  margin: 0 0 18px;
+  margin: 0;
   overflow: hidden;
+  width: 88px;
 }
 
-.agreement-media img {
+.agreement-thumb img {
   height: 100%;
   object-fit: contain;
-  padding: 16px;
+  padding: 10px;
   width: 100%;
 }
 
-.agreement-media.placeholder {
-  background:
-    linear-gradient(135deg, rgba(24, 113, 183, 0.12), rgba(24, 54, 80, 0.05)),
-    var(--surface-soft);
-  border-style: dashed;
+.agreement-thumb--placeholder::after {
+  color: rgba(24, 54, 80, 0.3);
+  content: "Logo";
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.agreement-media.placeholder::after {
-  color: rgba(24, 54, 80, 0.56);
-  content: "Logo do parceiro";
+.agreement-title h3 {
+  font-size: 18px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.agreement-title p {
+  font-size: 14px;
+}
+
+.meta-chip {
+  align-items: center;
+  background: var(--surface-soft);
+  border-radius: 999px;
+  color: var(--brand-dark);
+  display: inline-flex;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
+  gap: 5px;
+  padding: 5px 10px;
+}
+
+.agreement-alert {
+  align-items: flex-start;
+  background: rgba(24, 113, 183, 0.07);
+  border: 1px solid rgba(24, 113, 183, 0.15);
+  border-radius: var(--radius);
+  color: var(--brand-dark);
+  display: flex;
+  font-size: 13px;
+  gap: 10px;
+  line-height: 1.5;
+  padding: 12px 14px;
+}
+
+.agreement-alert svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.agreement-card .actions {
+  margin-top: auto;
+}
+
+.agreement-card .partner-button {
+  gap: 8px;
+  width: 100%;
 }
 
 .table-wrap {
@@ -1210,6 +1285,10 @@ textarea {
   }
 
   .cards[data-benefits] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cards[data-agreements] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
