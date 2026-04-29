@@ -312,6 +312,86 @@ p {
   transform: translateY(-3px);
 }
 
+.about-feature {
+  align-items: stretch;
+  display: grid;
+  gap: 28px;
+}
+
+.about-copy {
+  align-self: center;
+}
+
+.about-media {
+  align-items: center;
+  aspect-ratio: 4 / 3;
+  background:
+    linear-gradient(135deg, rgba(24, 113, 183, 0.16), rgba(24, 54, 80, 0.06)),
+    var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+.about-media span {
+  border: 1px dashed rgba(24, 54, 80, 0.28);
+  border-radius: 999px;
+  color: var(--brand-dark);
+  font-size: 13px;
+  font-weight: 900;
+  padding: 10px 14px;
+}
+
+.institutional-cards {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.icon-card {
+  display: grid;
+  gap: 12px;
+}
+
+.card-icon {
+  align-items: center;
+  background: var(--surface-soft);
+  border-radius: 8px;
+  color: var(--brand);
+  display: inline-flex;
+  font-size: 26px;
+  font-weight: 900;
+  height: 48px;
+  justify-content: center;
+  width: 48px;
+}
+
+.directors-grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.director-card {
+  display: grid;
+  gap: 14px;
+}
+
+.director-photo {
+  aspect-ratio: 1 / 1;
+  background:
+    linear-gradient(135deg, rgba(24, 113, 183, 0.22), rgba(24, 54, 80, 0.08)),
+    var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.director-card h3 {
+  font-size: 18px;
+}
+
 .tag {
   background: rgba(24, 113, 183, 0.12);
   border-radius: 999px;
@@ -745,6 +825,10 @@ textarea {
   .split {
     align-items: start;
     grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  .about-feature {
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
   }
 
   .admin-grid {
