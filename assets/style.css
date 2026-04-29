@@ -305,6 +305,10 @@ p {
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
 
+.cards[data-benefits] {
+  grid-template-columns: 1fr;
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -912,12 +916,22 @@ textarea {
     grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
   }
 
+  .cards[data-benefits] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .admin-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .admin-panel.wide {
     grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1120px) {
+  .cards[data-benefits] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
