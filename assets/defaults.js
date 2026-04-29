@@ -62,6 +62,11 @@ const defaults = {
     { name: "Procedimentos com instrumentação cirúrgica", section: "Convênios que permitem instrumentação cirúrgica", category: "Procedimentos", city: "Conforme operadora", unit: "Centro cirúrgico", allowsInstrumentation: true, requiresOnsiteAudit: false, imageUrl: "", description: "Orientação para convênios que permitem cobrança de instrumentação cirúrgica.", rules: "Algumas operadoras exigem verificação prévia com antecedência mínima.", link: "https://unicooper.coop.br/convenios/", active: true },
     { name: "Atendimentos com auditoria in loco", section: "Convênios que necessitam de auditoria in loco", category: "Auditoria", city: "Betim, Salvador e demais unidades", unit: "Unidades com auditoria", allowsInstrumentation: false, requiresOnsiteAudit: true, imageUrl: "", description: "Orientação para convênios que necessitam de auditoria presencial antes da finalização do fluxo.", rules: "Observe prazos e exigências de cada unidade antes do envio.", link: "https://unicooper.coop.br/convenios/", active: true }
   ],
+  directors: [
+    { name: "Dr. Marcus Eduardo Valadares Meireles Martins da Costa", role: "Diretor Presidente", photoUrl: "", order: 1 },
+    { name: "Dr. Gabriel Oliveira Bernardes Gil", role: "Diretor Administrativo", photoUrl: "", order: 2 },
+    { name: "Dr. Paulo Mascarenhas Mendes", role: "Diretor Financeiro", photoUrl: "", order: 3 }
+  ],
   calendar: [
     { date: "06/01/2026", type: "repasse", label: "Repasse médico" },
     { date: "30/01/2026", type: "devolucao", label: "Devolução de INSS" },

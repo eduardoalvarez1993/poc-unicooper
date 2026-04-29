@@ -30,9 +30,15 @@
         <span class="sidebar-cms-label">CMS</span>
       </div>
       <nav class="sidebar-nav">
-        <button class="sidebar-link active" data-nav="content" type="button">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Conteúdo geral
+        <button class="sidebar-link active" data-nav="pages" type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          Páginas
+        </button>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section-label">Conteúdo</span>
+        <button class="sidebar-link" data-nav="directors" type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
+          Diretores
         </button>
         <button class="sidebar-link" data-nav="benefits" type="button">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -48,7 +54,7 @@
         </button>
         <button class="sidebar-link" data-nav="contact" type="button">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Contato &amp; Links
+          Contato
         </button>
       </nav>
       <div class="sidebar-footer">
@@ -65,51 +71,83 @@
 
     <div class="admin-main">
       <header class="admin-header">
-        <h1 class="admin-page-title" data-page-title>Conteúdo geral</h1>
+        <div class="admin-header-left">
+          <button class="admin-back" data-back-to-pages type="button" hidden>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            Páginas
+          </button>
+          <h1 class="admin-page-title" data-page-title>Páginas</h1>
+        </div>
         <p class="status" data-status></p>
       </header>
 
       <div class="admin-panels">
 
-        <!-- Conteúdo geral -->
-        <section data-panel="content">
+        <!-- Lista de páginas -->
+        <section data-panel="pages">
+          <p class="pages-intro">Selecione uma página para editar seu hero e conteúdo.</p>
+          <div class="pages-grid">
+            <button class="page-card" data-page="home" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span class="page-card-name">Home</span>
+              <span class="page-card-url">/</span>
+            </button>
+            <button class="page-card" data-page="institucional" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              <span class="page-card-name">Institucional</span>
+              <span class="page-card-url">/institucional</span>
+            </button>
+            <button class="page-card" data-page="vantagens" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="page-card-name">Vantagens</span>
+              <span class="page-card-url">/vantagens</span>
+            </button>
+            <button class="page-card" data-page="convenios" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span class="page-card-name">Convênios</span>
+              <span class="page-card-url">/convenios</span>
+            </button>
+            <button class="page-card" data-page="cooperado" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              <span class="page-card-name">Área do Cooperado</span>
+              <span class="page-card-url">/area-do-cooperado</span>
+            </button>
+            <button class="page-card" data-page="calendario" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span class="page-card-name">Calendário</span>
+              <span class="page-card-url">/calendario</span>
+            </button>
+            <button class="page-card" data-page="contato" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span class="page-card-name">Contato</span>
+              <span class="page-card-url">/contato</span>
+            </button>
+            <button class="page-card" data-page="lgpd" type="button">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span class="page-card-name">LGPD</span>
+              <span class="page-card-url">/lgpd</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Página: Home -->
+        <section data-panel="page-home" hidden>
           <div class="admin-card">
             <div class="section-head">
-              <p class="eyebrow">Conteúdo geral</p>
-              <h2>Home, institucional e área do cooperado</h2>
+              <p class="eyebrow">Página</p>
+              <h2>Home</h2>
             </div>
-            <form class="form-grid" data-content-form>
+            <form class="form-grid" data-page-form="home">
+              <label>Imagem de fundo do hero
+                <input name="homeHeroImage" type="url" placeholder="https://">
+              </label>
               <label>Título do hero
                 <input name="homeHeroTitle" type="text">
               </label>
               <label>Texto do hero
                 <textarea name="homeHeroText"></textarea>
               </label>
-              <label>Imagem do hero - Home
-                <input name="homeHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Imagem do hero - Institucional
-                <input name="institutionalHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Imagem do hero - Vantagens
-                <input name="benefitsHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Imagem do hero - Convênios
-                <input name="agreementsHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Imagem do hero - Área do Cooperado
-                <input name="memberAreaHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Imagem do hero - Calendário
-                <input name="calendarHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Imagem do hero - Contato
-                <input name="contactHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Imagem do hero - LGPD
-                <input name="lgpdHeroImage" type="url" placeholder="https://">
-              </label>
-              <label>Título sobre a Unicooper
+              <label>Título "Sobre a Unicooper"
                 <input name="homeAboutTitle" type="text">
               </label>
               <label>Texto sobre a Unicooper
@@ -133,16 +171,89 @@
               <label>Valores
                 <textarea name="values"></textarea>
               </label>
+              <button class="button primary" type="submit">Salvar Home</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Página: Institucional -->
+        <section data-panel="page-institucional" hidden>
+          <div class="admin-card">
+            <div class="section-head">
+              <p class="eyebrow">Página</p>
+              <h2>Institucional</h2>
+            </div>
+            <form class="form-grid" data-page-form="institucional">
+              <label>Imagem de fundo do hero
+                <input name="institutionalHeroImage" type="url" placeholder="https://">
+              </label>
               <label>Texto institucional
                 <textarea name="institutionalText"></textarea>
               </label>
               <label>Mandato da diretoria
-                <input name="boardTerm" type="text">
+                <input name="boardTerm" type="text" placeholder="Diretoria 2026/2029">
               </label>
-              <label>Diretoria
-                <textarea name="boardMembers"></textarea>
+              <button class="button primary" type="submit">Salvar Institucional</button>
+            </form>
+          </div>
+          <div class="page-manage-section">
+            <p>Os cards de diretores são gerenciados como uma lista dinâmica.</p>
+            <button class="button secondary" data-manage="directors" type="button">Gerenciar diretores</button>
+          </div>
+        </section>
+
+        <!-- Página: Vantagens -->
+        <section data-panel="page-vantagens" hidden>
+          <div class="admin-card admin-card--narrow">
+            <div class="section-head">
+              <p class="eyebrow">Página</p>
+              <h2>Vantagens</h2>
+            </div>
+            <form class="form-grid" data-page-form="vantagens">
+              <label>Imagem de fundo do hero
+                <input name="benefitsHeroImage" type="url" placeholder="https://">
               </label>
-              <label>Texto da área do cooperado
+              <button class="button primary" type="submit">Salvar hero</button>
+            </form>
+          </div>
+          <div class="page-manage-section">
+            <p>Os cards de vantagens são gerenciados como uma lista dinâmica.</p>
+            <button class="button secondary" data-manage="benefits" type="button">Gerenciar vantagens</button>
+          </div>
+        </section>
+
+        <!-- Página: Convênios -->
+        <section data-panel="page-convenios" hidden>
+          <div class="admin-card admin-card--narrow">
+            <div class="section-head">
+              <p class="eyebrow">Página</p>
+              <h2>Convênios</h2>
+            </div>
+            <form class="form-grid" data-page-form="convenios">
+              <label>Imagem de fundo do hero
+                <input name="agreementsHeroImage" type="url" placeholder="https://">
+              </label>
+              <button class="button primary" type="submit">Salvar hero</button>
+            </form>
+          </div>
+          <div class="page-manage-section">
+            <p>Os cards de convênios são gerenciados como uma lista dinâmica.</p>
+            <button class="button secondary" data-manage="agreements" type="button">Gerenciar convênios</button>
+          </div>
+        </section>
+
+        <!-- Página: Área do Cooperado -->
+        <section data-panel="page-cooperado" hidden>
+          <div class="admin-card">
+            <div class="section-head">
+              <p class="eyebrow">Página</p>
+              <h2>Área do Cooperado</h2>
+            </div>
+            <form class="form-grid" data-page-form="cooperado">
+              <label>Imagem de fundo do hero
+                <input name="memberAreaHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Texto introdutório
                 <textarea name="memberAreaText"></textarea>
               </label>
               <label>URL do portal do cooperado
@@ -169,17 +280,105 @@
               <label>SAC Unicooper
                 <textarea name="sacText"></textarea>
               </label>
+              <button class="button primary" type="submit">Salvar Área do Cooperado</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Página: Calendário -->
+        <section data-panel="page-calendario" hidden>
+          <div class="admin-card admin-card--narrow">
+            <div class="section-head">
+              <p class="eyebrow">Página</p>
+              <h2>Calendário</h2>
+            </div>
+            <form class="form-grid" data-page-form="calendario">
+              <label>Imagem de fundo do hero
+                <input name="calendarHeroImage" type="url" placeholder="https://">
+              </label>
+              <button class="button primary" type="submit">Salvar hero</button>
+            </form>
+          </div>
+          <div class="page-manage-section">
+            <p>As datas de repasse são gerenciadas como uma lista dinâmica.</p>
+            <button class="button secondary" data-manage="calendar" type="button">Gerenciar eventos</button>
+          </div>
+        </section>
+
+        <!-- Página: Contato -->
+        <section data-panel="page-contato" hidden>
+          <div class="admin-card admin-card--narrow">
+            <div class="section-head">
+              <p class="eyebrow">Página</p>
+              <h2>Contato</h2>
+            </div>
+            <form class="form-grid" data-page-form="contato">
+              <label>Imagem de fundo do hero
+                <input name="contactHeroImage" type="url" placeholder="https://">
+              </label>
+              <button class="button primary" type="submit">Salvar hero</button>
+            </form>
+          </div>
+          <div class="page-manage-section">
+            <p>Os dados de contato são gerenciados separadamente.</p>
+            <button class="button secondary" data-manage="contact" type="button">Gerenciar contato</button>
+          </div>
+        </section>
+
+        <!-- Página: LGPD -->
+        <section data-panel="page-lgpd" hidden>
+          <div class="admin-card admin-card--narrow">
+            <div class="section-head">
+              <p class="eyebrow">Página</p>
+              <h2>LGPD</h2>
+            </div>
+            <form class="form-grid" data-page-form="lgpd">
+              <label>Imagem de fundo do hero
+                <input name="lgpdHeroImage" type="url" placeholder="https://">
+              </label>
               <label>Texto LGPD
                 <textarea name="lgpdText"></textarea>
               </label>
-              <label>Link Requisição do Titular
+              <label>Link — Requisição do Titular
                 <input name="lgpdRequestUrl" type="url" placeholder="https://">
               </label>
-              <label>Link Canal de Denúncia
+              <label>Link — Canal de Denúncia
                 <input name="lgpdReportUrl" type="url" placeholder="https://">
               </label>
-              <button class="button primary" type="submit">Salvar conteúdo</button>
+              <button class="button primary" type="submit">Salvar LGPD</button>
             </form>
+          </div>
+        </section>
+
+        <!-- Diretores -->
+        <section data-panel="directors" hidden>
+          <div class="cms-split">
+            <div class="admin-card">
+              <div class="section-head">
+                <p class="eyebrow">Diretores</p>
+                <h2>Adicionar ou editar</h2>
+              </div>
+              <form class="form-grid" data-director-form>
+                <input name="id" type="hidden">
+                <label>Nome completo
+                  <input name="name" type="text" required>
+                </label>
+                <label>Cargo
+                  <input name="role" type="text" required>
+                </label>
+                <label>URL da foto
+                  <input name="photoUrl" type="url" placeholder="https://">
+                </label>
+                <label>Ordem de exibição
+                  <input name="order" type="number" min="1" placeholder="1">
+                </label>
+                <button class="button primary" type="submit">Salvar diretor</button>
+              </form>
+            </div>
+            <div class="admin-card">
+              <h3 class="cms-list-title">Cadastrados</h3>
+              <div class="admin-list" data-directors-list></div>
+            </div>
           </div>
         </section>
 
@@ -300,7 +499,7 @@
           </div>
         </section>
 
-        <!-- Contato & Links -->
+        <!-- Contato -->
         <section data-panel="contact" hidden>
           <div class="admin-card admin-card--narrow">
             <div class="section-head">

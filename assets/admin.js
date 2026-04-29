@@ -11,52 +11,36 @@ import {
 } from "./firebase.js";
 import { defaults } from "./defaults.js";
 
-const contentFields = [
-  "homeHeroTitle",
-  "homeHeroText",
-  "homeHeroImage",
-  "institutionalHeroImage",
-  "benefitsHeroImage",
-  "agreementsHeroImage",
-  "memberAreaHeroImage",
-  "calendarHeroImage",
-  "contactHeroImage",
-  "lgpdHeroImage",
-  "homeAboutTitle",
-  "homeAboutText",
-  "cooperativeCta",
-  "business",
-  "whoWeAre",
-  "mission",
-  "vision",
-  "values",
-  "institutionalText",
-  "boardTerm",
-  "boardMembers",
-  "memberAreaText",
-  "portalUrl",
-  "clinicSystemUrl",
-  "howToJoinText",
-  "legalEntityText",
-  "transferTrackingText",
-  "clinicText",
-  "documentsText",
-  "sacText",
-  "lgpdText",
-  "lgpdRequestUrl",
-  "lgpdReportUrl"
-];
+const pageFields = {
+  home: ["homeHeroTitle", "homeHeroText", "homeHeroImage", "homeAboutTitle", "homeAboutText", "cooperativeCta", "business", "whoWeAre", "mission", "vision", "values"],
+  institucional: ["institutionalHeroImage", "institutionalText", "boardTerm"],
+  vantagens: ["benefitsHeroImage"],
+  convenios: ["agreementsHeroImage"],
+  cooperado: ["memberAreaHeroImage", "memberAreaText", "portalUrl", "clinicSystemUrl", "howToJoinText", "legalEntityText", "transferTrackingText", "clinicText", "documentsText", "sacText"],
+  calendario: ["calendarHeroImage"],
+  contato: ["contactHeroImage"],
+  lgpd: ["lgpdHeroImage", "lgpdText", "lgpdRequestUrl", "lgpdReportUrl"]
+};
 
 const contactFields = ["address", "phone", "whatsapp", "email", "cnpj", "hours"];
 
 const ADMIN_ACCESS_CODE = "unicooper2026";
 
 const PANEL_TITLES = {
-  content: "Conteúdo geral",
+  pages: "Páginas",
+  "page-home": "Home",
+  "page-institucional": "Institucional",
+  "page-vantagens": "Vantagens",
+  "page-convenios": "Convênios",
+  "page-cooperado": "Área do Cooperado",
+  "page-calendario": "Calendário",
+  "page-contato": "Contato",
+  "page-lgpd": "LGPD",
+  directors: "Diretores",
   benefits: "Vantagens",
   agreements: "Convênios",
   calendar: "Calendário",
-  contact: "Contato & Links"
+  contact: "Contato"
 };
 
 document.addEventListener("DOMContentLoaded", initAdmin);
@@ -71,8 +55,11 @@ async function initAdmin() {
   } catch (error) {
     console.warn("Firestore indisponivel no admin.", error);
     showStatus("Nao foi possivel conectar ao Firestore. Verifique se o banco esta ativo, as regras da POC e a conexao.");
-    fillForm("[data-content-form]", contentFields, defaults.siteContent);
+    Object.keys(pageFields).forEach((pageKey) => {
+      fillForm(`[data-page-form="${pageKey}"]`, pageFields[pageKey], defaults.siteContent);
+    });
     fillForm("[data-contact-form]", contactFields, defaults.contact);
+    renderOfflineList("directors", defaults.directors, renderDirectorItem);
     renderOfflineList("benefits", defaults.benefits, renderBenefitItem);
     renderOfflineList("agreements", defaults.agreements, renderAgreementItem);
     renderOfflineList("calendar", defaults.calendar, renderCalendarItem);
@@ -82,6 +69,18 @@ async function initAdmin() {
 function initNav() {
   document.querySelectorAll("[data-nav]").forEach((btn) => {
     btn.addEventListener("click", () => switchPanel(btn.dataset.nav));
+  });
+
+  document.querySelectorAll("[data-page]").forEach((card) => {
+    card.addEventListener("click", () => switchPanel(`page-${card.dataset.page}`));
+  });
+
+  document.querySelectorAll("[data-back-to-pages]").forEach((btn) => {
+    btn.addEventListener("click", () => switchPanel("pages"));
+  });
+
+  document.querySelectorAll("[data-manage]").forEach((btn) => {
+    btn.addEventListener("click", () => switchPanel(btn.dataset.manage));
   });
 
   const logout = document.querySelector("[data-logout]");
@@ -98,9 +97,13 @@ function switchPanel(name) {
     panel.hidden = panel.dataset.panel !== name;
   });
 
+  const sidebarTarget = name.startsWith("page-") ? "pages" : name;
   document.querySelectorAll("[data-nav]").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.nav === name);
+    btn.classList.toggle("active", btn.dataset.nav === sidebarTarget);
   });
+
+  const backBtn = document.querySelector("[data-back-to-pages]");
+  if (backBtn) backBtn.hidden = !name.startsWith("page-");
 
   const titleEl = document.querySelector("[data-page-title]");
   if (titleEl) titleEl.textContent = PANEL_TITLES[name] || name;
@@ -118,7 +121,6 @@ function unlockAdmin() {
     return true;
   }
 
-  shell.hidden = true;
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     if (form.elements.accessCode.value !== ADMIN_ACCESS_CODE) {
@@ -141,15 +143,20 @@ function unlockAdmin() {
 }
 
 function bindForms() {
-  document.querySelector("[data-content-form]").addEventListener("submit", saveContent);
-  document.querySelector("[data-contact-form]").addEventListener("submit", saveContact);
+  Object.keys(pageFields).forEach((pageKey) => {
+    const form = document.querySelector(`[data-page-form="${pageKey}"]`);
+    if (form) form.addEventListener("submit", (event) => savePage(pageKey, event));
+  });
+  document.querySelector("[data-director-form]").addEventListener("submit", saveDirector);
   document.querySelector("[data-benefit-form]").addEventListener("submit", saveBenefit);
   document.querySelector("[data-agreement-form]").addEventListener("submit", saveAgreement);
   document.querySelector("[data-calendar-form]").addEventListener("submit", saveCalendar);
+  document.querySelector("[data-contact-form]").addEventListener("submit", saveContact);
 }
 
 function renderOfflineList(collectionName, items, renderer) {
   const container = document.querySelector(`[data-${collectionName}-list]`);
+  if (!container) return;
   container.innerHTML = items.map((item, index) => renderer({ id: `offline-${index}`, ...item })).join("");
 }
 
@@ -157,6 +164,7 @@ async function loadAdminData() {
   await Promise.all([
     loadContent(),
     loadContact(),
+    renderCollection("directors", renderDirectorItem),
     renderCollection("benefits", renderBenefitItem),
     renderCollection("agreements", renderAgreementItem),
     renderCollection("calendar", renderCalendarItem)
@@ -176,6 +184,7 @@ async function ensureInitialData() {
     await setDoc(contactRef, defaults.contact, { merge: true });
   }
 
+  await seedCollection("directors", defaults.directors);
   await seedCollection("benefits", defaults.benefits);
   await seedCollection("agreements", defaults.agreements);
   await seedCollection("calendar", defaults.calendar);
@@ -207,7 +216,9 @@ function hasOldSeedData(collectionName, items) {
 async function loadContent() {
   const snap = await getDoc(doc(db, "siteContent", "main"));
   const data = snap.exists() ? snap.data() : {};
-  fillForm("[data-content-form]", contentFields, data);
+  Object.keys(pageFields).forEach((pageKey) => {
+    fillForm(`[data-page-form="${pageKey}"]`, pageFields[pageKey], data);
+  });
 }
 
 async function loadContact() {
@@ -218,17 +229,18 @@ async function loadContact() {
 
 function fillForm(selector, fields, data) {
   const form = document.querySelector(selector);
+  if (!form) return;
   fields.forEach((field) => {
     const input = form.elements[field];
     if (input) input.value = data[field] || "";
   });
 }
 
-async function saveContent(event) {
+async function savePage(pageKey, event) {
   event.preventDefault();
-  const data = formDataToObject(event.currentTarget, contentFields);
+  const data = formDataToObject(event.currentTarget, pageFields[pageKey]);
   await setDoc(doc(db, "siteContent", "main"), data, { merge: true });
-  showStatus("Conteúdo salvo.");
+  showStatus("Salvo.");
 }
 
 async function saveContact(event) {
@@ -236,6 +248,17 @@ async function saveContact(event) {
   const data = formDataToObject(event.currentTarget, contactFields);
   await setDoc(doc(db, "contact", "main"), data, { merge: true });
   showStatus("Contato salvo.");
+}
+
+async function saveDirector(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const data = formDataToObject(form, ["name", "role", "photoUrl"]);
+  data.order = parseInt(form.elements.order.value, 10) || 0;
+  await upsertCollectionItem("directors", form.elements.id.value, data);
+  resetForm(form);
+  await renderCollection("directors", renderDirectorItem);
+  showStatus("Diretor salvo.");
 }
 
 async function saveBenefit(event) {
@@ -282,6 +305,7 @@ async function upsertCollectionItem(collectionName, id, data) {
 
 async function renderCollection(collectionName, renderer) {
   const container = document.querySelector(`[data-${collectionName}-list]`);
+  if (!container) return;
   const snap = await getDocs(collection(db, collectionName));
   const items = snap.docs.map((item) => ({ id: item.id, ...item.data() }));
   container.innerHTML = items.length ? items.map(renderer).join("") : '<p class="empty">Nenhum item cadastrado.</p>';
@@ -335,6 +359,19 @@ async function toggleAgreement(id, active) {
   showStatus(active ? "Convênio inativado." : "Convênio ativado.");
 }
 
+function renderDirectorItem(item) {
+  return `
+    <article class="admin-item">
+      <div>
+        <strong>${escapeHtml(item.name)}</strong>
+        <p>${escapeHtml(item.role)}${item.order ? ` · Ordem ${item.order}` : ""}</p>
+        ${item.photoUrl ? `<p class="item-url">${escapeHtml(item.photoUrl)}</p>` : ""}
+      </div>
+      ${itemActions("directors", item)}
+    </article>
+  `;
+}
+
 function renderBenefitItem(item) {
   return `
     <article class="admin-item">
@@ -351,10 +388,7 @@ function renderAgreementItem(item) {
         <strong>${escapeHtml(item.name)}</strong>
         <p>${escapeHtml(item.section || "Convênios")} · ${escapeHtml(item.category)} · ${item.active === false ? "Inativo" : "Ativo"}</p>
         <p>${escapeHtml([item.city, item.unit].filter(Boolean).join(" · "))}</p>
-        <p>Instrumentação cirúrgica: ${item.allowsInstrumentation ? "Sim" : "Não"} · Auditoria in loco: ${item.requiresOnsiteAudit ? "Sim" : "Não"}</p>
-        <p>${escapeHtml(item.description)}</p>
-        ${item.imageUrl ? `<p>Imagem: ${escapeHtml(item.imageUrl)}</p>` : ""}
-        ${item.rules ? `<p>${escapeHtml(item.rules)}</p>` : ""}
+        <p>Instrumentação: ${item.allowsInstrumentation ? "Sim" : "Não"} · Auditoria in loco: ${item.requiresOnsiteAudit ? "Sim" : "Não"}</p>
       </div>
       <div class="item-actions">
         <button class="button small secondary" type="button" data-edit="${item.id}">Editar</button>
@@ -368,7 +402,7 @@ function renderAgreementItem(item) {
 function renderCalendarItem(item) {
   return `
     <article class="admin-item">
-      <div><strong>${escapeHtml(item.date)} - ${escapeHtml(formatCalendarType(item.type))}</strong><p>${escapeHtml(item.label || item.note || "")}</p></div>
+      <div><strong>${escapeHtml(item.date)} — ${escapeHtml(formatCalendarType(item.type))}</strong><p>${escapeHtml(item.label || item.note || "")}</p></div>
       ${itemActions("calendar", item)}
     </article>
   `;
@@ -401,6 +435,7 @@ function resetForm(form) {
 
 function singular(collectionName) {
   return {
+    directors: "director",
     benefits: "benefit",
     agreements: "agreement",
     calendar: "calendar"
@@ -409,6 +444,7 @@ function singular(collectionName) {
 
 function getRenderer(collectionName) {
   return {
+    directors: renderDirectorItem,
     benefits: renderBenefitItem,
     agreements: renderAgreementItem,
     calendar: renderCalendarItem

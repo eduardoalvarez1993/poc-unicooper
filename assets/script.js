@@ -12,7 +12,8 @@ const state = {
   contact: defaults.contact,
   benefits: [],
   agreements: [],
-  calendar: []
+  calendar: [],
+  directors: []
 };
 
 document.addEventListener("DOMContentLoaded", init);
@@ -49,12 +50,13 @@ function setupNavigation() {
 }
 
 async function loadData() {
-  const [contentSnap, contactSnap, benefitsSnap, agreementsSnap, calendarSnap] = await Promise.all([
+  const [contentSnap, contactSnap, benefitsSnap, agreementsSnap, calendarSnap, directorsSnap] = await Promise.all([
     getDoc(doc(db, "siteContent", "main")),
     getDoc(doc(db, "contact", "main")),
     getDocs(collection(db, "benefits")),
     getDocs(collection(db, "agreements")),
-    getDocs(collection(db, "calendar"))
+    getDocs(collection(db, "calendar")),
+    getDocs(collection(db, "directors"))
   ]);
 
   state.content = contentSnap.exists() ? { ...defaults.siteContent, ...contentSnap.data() } : defaults.siteContent;
@@ -62,6 +64,7 @@ async function loadData() {
   state.benefits = mapDocs(benefitsSnap);
   state.agreements = mapDocs(agreementsSnap).filter((item) => item.active !== false);
   state.calendar = mapDocs(calendarSnap);
+  state.directors = mapDocs(directorsSnap).sort((a, b) => (a.order || 0) - (b.order || 0));
 }
 
 function loadFallbackData() {
@@ -70,6 +73,7 @@ function loadFallbackData() {
   state.benefits = defaults.benefits;
   state.agreements = defaults.agreements.filter((item) => item.active !== false);
   state.calendar = defaults.calendar;
+  state.directors = [...defaults.directors].sort((a, b) => (a.order || 0) - (b.order || 0));
 }
 
 function mapDocs(snapshot) {
@@ -88,6 +92,7 @@ function renderPage() {
   renderAgreementFilters();
   renderCalendar();
   renderContact();
+  renderDirectors();
 }
 
 function renderSkeletons() {
@@ -197,6 +202,29 @@ function renderFloatingWhatsapp() {
   link.setAttribute("aria-label", "Falar com a Unicooper pelo WhatsApp");
   link.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="" aria-hidden="true">';
   document.body.appendChild(link);
+}
+
+function renderDirectors() {
+  const container = document.querySelector("[data-directors]");
+  if (!container) return;
+
+  if (!state.directors.length) {
+    container.innerHTML = "";
+    return;
+  }
+
+  container.innerHTML = state.directors.map((item) => {
+    const photo = isSafeExternalUrl(item.photoUrl)
+      ? `<figure class="director-photo"><img src="${escapeAttr(item.photoUrl)}" alt="${escapeAttr(item.name)}" loading="lazy"></figure>`
+      : `<div class="director-photo" aria-hidden="true"></div>`;
+    return `
+      <article class="card director-card">
+        ${photo}
+        <h3>${escapeHtml(item.name)}</h3>
+        <p>${escapeHtml(item.role)}</p>
+      </article>
+    `;
+  }).join("");
 }
 
 function renderBenefits() {
