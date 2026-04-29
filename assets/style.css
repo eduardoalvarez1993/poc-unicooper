@@ -153,6 +153,11 @@ svg {
 }
 
 .hero {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(243, 248, 251, 0.82)),
+    radial-gradient(circle at 82% 22%, rgba(24, 113, 183, 0.2), transparent 26%),
+    radial-gradient(circle at 70% 84%, rgba(24, 54, 80, 0.12), transparent 30%),
+    var(--surface-soft);
   overflow: hidden;
   padding: 76px 20px 56px;
   position: relative;
@@ -160,11 +165,21 @@ svg {
 
 .hero::before {
   background:
+    linear-gradient(90deg, rgba(247, 251, 253, 0.94), rgba(247, 251, 253, 0.76) 52%, rgba(247, 251, 253, 0.44)),
     radial-gradient(circle at 20% 10%, rgba(87, 167, 216, 0.22), transparent 32%),
     linear-gradient(135deg, rgba(24, 113, 183, 0.12), rgba(255, 255, 255, 0));
   content: "";
   inset: 0;
   position: absolute;
+  z-index: 0;
+}
+
+.hero.has-hero-image::before {
+  background:
+    linear-gradient(90deg, rgba(247, 251, 253, 0.96), rgba(247, 251, 253, 0.78) 52%, rgba(247, 251, 253, 0.35)),
+    var(--hero-image);
+  background-position: center;
+  background-size: cover;
 }
 
 .hero-grid {
@@ -173,6 +188,7 @@ svg {
   margin: 0 auto;
   max-width: var(--max);
   position: relative;
+  z-index: 1;
 }
 
 .eyebrow {

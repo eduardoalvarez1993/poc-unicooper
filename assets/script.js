@@ -81,6 +81,7 @@ function renderPage() {
   bindText();
   bindMultilineText();
   bindLinks();
+  renderHeroImages();
   renderFloatingWhatsapp();
   renderBenefits();
   renderAgreements();
@@ -170,6 +171,17 @@ function bindLinks() {
 
   document.querySelectorAll("[data-lgpd-report-link]").forEach((link) => {
     link.href = state.content.lgpdReportUrl || "#";
+  });
+}
+
+function renderHeroImages() {
+  document.querySelectorAll("[data-hero-image]").forEach((hero) => {
+    const key = hero.dataset.heroImage;
+    const imageUrl = state.content[key] || "";
+    if (!isSafeExternalUrl(imageUrl)) return;
+
+    hero.classList.add("has-hero-image");
+    hero.style.setProperty("--hero-image", `url("${escapeCssUrl(imageUrl)}")`);
   });
 }
 
@@ -317,6 +329,10 @@ function isSafeExternalUrl(value = "") {
   } catch {
     return false;
   }
+}
+
+function escapeCssUrl(value = "") {
+  return String(value).replaceAll("\\", "\\\\").replaceAll('"', '\\"');
 }
 
 function renderCalendar() {
