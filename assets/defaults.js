@@ -1,6 +1,6 @@
 const defaults = {
   siteContent: {
-    seedVersion: "unicooper-site-2026-04-brief",
+    seedVersion: "unicooper-site-2026-04-gaps",
     homeHeroTitle: "Bem Vindos à Unicooper Cooperativa de Médicos",
     homeHeroText: "O cooperativismo faz surgir nos associados espírito de equipe, compartilhamento de valores e objetivos, criando a necessária união e mobilização dos profissionais da área de saúde. As vantagens podem ser sentidas em vários aspectos, incluindo a remuneração do profissional.",
     homeAboutTitle: "Cooperativismo médico com retorno justo",
@@ -17,7 +17,7 @@ const defaults = {
     memberAreaText: "A área do cooperado reúne orientações para se cooperar, acesso ao portal, cadastro de pessoa jurídica, acompanhamento de repasse, sistema de consultório e documentos oficiais.",
     portalUrl: "https://portalcooperado.unicooper.coop.br/PortalCooperado/",
     clinicSystemUrl: "https://app.unicooper.coop.br/Consultorio",
-    howToJoinText: "Acesse a cartilha de adesão para consultar as orientações de como se cooperar.",
+    howToJoinText: "Consulte as orientações para se cooperar e fale com a equipe da Unicooper para iniciar seu processo de adesão.",
     legalEntityText: "Para realizar o cadastro da pessoa jurídica, todos os sócios devem ser médicos cooperados como pessoa física e a PJ não poderá ser optante pelo Simples Nacional.",
     transferTrackingText: "O cooperado acompanha informações sobre repasse médico, lançamentos feitos pela cooperativa e relatórios online.",
     clinicText: "O sistema de consultório permite acesso ao ambiente usado no fluxo de consultórios médicos.",
@@ -47,15 +47,19 @@ const defaults = {
     { title: "Agilidade", description: "Uso de recursos tecnológicos para executar processos complexos com assertividade e rapidez." }
   ],
   agreements: [
-    { name: "Convênios de consultório em Belo Horizonte", category: "Consultórios BH", description: "Convênios que aceitam cobrança de atendimentos em consultórios de Belo Horizonte. Informações sujeitas a alterações diárias.", link: "https://unicooper.coop.br/convenios/", active: true },
-    { name: "Convênios faturados - Belo Horizonte / Betim", category: "Faturamento", description: "Relação de convênios faturados pela Unicooper para Belo Horizonte e Betim.", link: "https://unicooper.coop.br/convenios/", active: true },
-    { name: "Convênios faturados - Nova Lima", category: "Faturamento", description: "Relação de convênios faturados pela Unicooper para Nova Lima.", link: "https://unicooper.coop.br/convenios/", active: true },
-    { name: "Convênios faturados - Salvador", category: "Faturamento", description: "Relação de convênios faturados pela Unicooper para Salvador.", link: "https://unicooper.coop.br/convenios/", active: true },
-    { name: "Instrumentação cirúrgica", category: "Procedimentos", description: "Convênios que permitem instrumentação cirúrgica. Para Care Plus, entrar em contato com 48h de antecedência para verificação.", link: "https://unicooper.coop.br/convenios/", active: true },
-    { name: "Auditoria in loco", category: "Auditoria", description: "Convênios que necessitam de auditoria in loco em Betim, Salvador e demais unidades.", link: "https://unicooper.coop.br/convenios/", active: true }
+    { name: "Consultórios Belo Horizonte", category: "Consultórios", city: "Belo Horizonte", unit: "Consultório médico", description: "Atendimentos em consultórios com cobrança orientada pela Unicooper.", rules: "Confirme autorização, elegibilidade e regras de retorno antes do atendimento.", link: "https://unicooper.coop.br/convenios/", active: true },
+    { name: "Belo Horizonte / Betim", category: "Faturamento", city: "Belo Horizonte e Betim", unit: "Unidades conveniadas", description: "Convênios faturados pela Unicooper nas unidades de Belo Horizonte e Betim.", rules: "Acompanhe regras de autorização, retorno e auditoria conforme cada operadora.", link: "https://unicooper.coop.br/convenios/", active: true },
+    { name: "Nova Lima", category: "Faturamento", city: "Nova Lima", unit: "Unidades conveniadas", description: "Convênios faturados pela Unicooper na unidade de Nova Lima.", rules: "Verifique previamente regras operacionais e documentação necessária.", link: "https://unicooper.coop.br/convenios/", active: true },
+    { name: "Salvador", category: "Faturamento", city: "Salvador", unit: "Unidades conveniadas", description: "Convênios faturados pela Unicooper na unidade de Salvador.", rules: "Consulte particularidades de autorização e auditoria por unidade.", link: "https://unicooper.coop.br/convenios/", active: true },
+    { name: "Instrumentação cirúrgica", category: "Procedimentos", city: "Conforme operadora", unit: "Centro cirúrgico", description: "Convênios que permitem cobrança de instrumentação cirúrgica.", rules: "Algumas operadoras exigem verificação prévia com antecedência mínima.", link: "https://unicooper.coop.br/convenios/", active: true },
+    { name: "Auditoria in loco", category: "Auditoria", city: "Betim, Salvador e demais unidades", unit: "Unidades com auditoria", description: "Convênios que necessitam de auditoria presencial antes da finalização do fluxo.", rules: "Observe prazos e exigências de cada unidade antes do envio.", link: "https://unicooper.coop.br/convenios/", active: true }
   ],
   calendar: [
-    { month: "Calendário de Repasse 2026", date: "Consulte a Unicooper", note: "As datas de repasse serão divulgadas conforme o calendário oficial da cooperativa." }
+    { date: "06/01/2026", type: "repasse", label: "Repasse médico" },
+    { date: "30/01/2026", type: "devolucao", label: "Devolução de INSS" },
+    { date: "06/02/2026", type: "repasse", label: "Repasse médico" },
+    { date: "27/02/2026", type: "devolucao", label: "Devolução de INSS" },
+    { date: "06/03/2026", type: "repasse", label: "Repasse médico" }
   ]
 };
 

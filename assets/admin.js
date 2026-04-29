@@ -41,10 +41,12 @@ const contentFields = [
 
 const contactFields = ["address", "phone", "whatsapp", "email", "cnpj", "hours"];
 
+const ADMIN_ACCESS_CODE = "unicooper2026";
 
 document.addEventListener("DOMContentLoaded", initAdmin);
 
 async function initAdmin() {
+  if (!unlockAdmin()) return;
   bindForms();
   try {
     await ensureInitialData();
@@ -58,6 +60,39 @@ async function initAdmin() {
     renderOfflineList("agreements", defaults.agreements, renderAgreementItem);
     renderOfflineList("calendar", defaults.calendar, renderCalendarItem);
   }
+}
+
+function unlockAdmin() {
+  const shell = document.querySelector(".admin-shell");
+  const lock = document.querySelector("[data-admin-lock]");
+  const form = document.querySelector("[data-admin-login]");
+  const status = document.querySelector("[data-login-status]");
+
+  if (sessionStorage.getItem("unicooperAdminUnlocked") === "true") {
+    lock.hidden = true;
+    shell.hidden = false;
+    return true;
+  }
+
+  shell.hidden = true;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (form.elements.accessCode.value !== ADMIN_ACCESS_CODE) {
+      status.textContent = "Código inválido.";
+      return;
+    }
+
+    sessionStorage.setItem("unicooperAdminUnlocked", "true");
+    lock.hidden = true;
+    shell.hidden = false;
+    bindForms();
+    ensureInitialData().then(loadAdminData).catch((error) => {
+      console.warn("Conteudo remoto indisponivel no admin.", error);
+      showStatus("Nao foi possivel carregar os dados agora.");
+    });
+  });
+
+  return false;
 }
 
 function bindForms() {
@@ -117,8 +152,8 @@ async function seedCollection(collectionName, items) {
 function hasOldSeedData(collectionName, items) {
   const markers = {
     benefits: (item) => item.title === "Atendimento próximo",
-    agreements: (item) => item.name === "Clínica Vida Plena",
-    calendar: (item) => item.month === "Janeiro" && item.note === "Repasse regular"
+    agreements: (item) => item.name === "Clínica Vida Plena" || item.name === "Convênios de consultório em Belo Horizonte",
+    calendar: (item) => item.month === "Janeiro" && item.note === "Repasse regular" || item.month === "Calendário de Repasse 2026"
   };
 
   return Boolean(markers[collectionName] && items.some(markers[collectionName]));
@@ -171,7 +206,7 @@ async function saveBenefit(event) {
 async function saveAgreement(event) {
   event.preventDefault();
   const form = event.currentTarget;
-  const data = formDataToObject(form, ["name", "category", "description", "link"]);
+  const data = formDataToObject(form, ["name", "category", "city", "unit", "description", "rules", "link"]);
   data.active = form.elements.active.checked;
   await upsertCollectionItem("agreements", form.elements.id.value, data);
   resetForm(form);
@@ -183,7 +218,7 @@ async function saveAgreement(event) {
 async function saveCalendar(event) {
   event.preventDefault();
   const form = event.currentTarget;
-  const data = formDataToObject(form, ["month", "date", "note"]);
+  const data = formDataToObject(form, ["date", "type", "label"]);
   await upsertCollectionItem("calendar", form.elements.id.value, data);
   resetForm(form);
   await renderCollection("calendar", renderCalendarItem);
@@ -268,7 +303,9 @@ function renderAgreementItem(item) {
       <div>
         <strong>${escapeHtml(item.name)}</strong>
         <p>${escapeHtml(item.category)} · ${item.active === false ? "Inativo" : "Ativo"}</p>
+        <p>${escapeHtml([item.city, item.unit].filter(Boolean).join(" · "))}</p>
         <p>${escapeHtml(item.description)}</p>
+        ${item.rules ? `<p>${escapeHtml(item.rules)}</p>` : ""}
       </div>
       <div class="item-actions">
         <button class="button small secondary" type="button" data-edit="${item.id}">Editar</button>
@@ -282,10 +319,14 @@ function renderAgreementItem(item) {
 function renderCalendarItem(item) {
   return `
     <article class="admin-item">
-      <div><strong>${escapeHtml(item.month)} - ${escapeHtml(item.date)}</strong><p>${escapeHtml(item.note || "")}</p></div>
+      <div><strong>${escapeHtml(item.date)} - ${escapeHtml(formatCalendarType(item.type))}</strong><p>${escapeHtml(item.label || item.note || "")}</p></div>
       ${itemActions("calendar", item)}
     </article>
   `;
+}
+
+function formatCalendarType(type) {
+  return type === "devolucao" ? "Devolução" : "Repasse";
 }
 
 function itemActions(collectionName, item) {

@@ -8,6 +8,19 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body class="admin-body">
+  <section class="admin-lock" data-admin-lock>
+    <form class="admin-lock-card" data-admin-login>
+      <img class="brand-mark" src="https://unicooper.coop.br/wp-content/uploads/2019/02/Logo-Unicooper-logo-site.png" alt="Unicooper">
+      <h1>Acesso administrativo</h1>
+      <p>Informe o código de acesso para gerenciar o conteúdo do site.</p>
+      <label>Código de acesso
+        <input name="accessCode" type="password" autocomplete="current-password" required>
+      </label>
+      <button class="button primary" type="submit">Entrar</button>
+      <p class="status" data-login-status></p>
+    </form>
+  </section>
+
   <main class="admin-shell">
     <div class="admin-top">
       <a class="brand" href="index.html"><img class="brand-mark" src="https://unicooper.coop.br/wp-content/uploads/2019/02/Logo-Unicooper-logo-site.png" alt="Unicooper CMS"><span>CMS</span></a>
@@ -135,8 +148,17 @@
           <label>Categoria
             <input name="category" type="text" required>
           </label>
+          <label>Cidade ou região
+            <input name="city" type="text">
+          </label>
+          <label>Unidade
+            <input name="unit" type="text">
+          </label>
           <label>Descrição
             <textarea name="description" required></textarea>
+          </label>
+          <label>Regras e observações
+            <textarea name="rules"></textarea>
           </label>
           <label>Link externo
             <input name="link" type="url" placeholder="https://">
@@ -157,16 +179,19 @@
         </div>
         <form class="form-grid" data-calendar-form>
           <input name="id" type="hidden">
-          <label>Mês
-            <input name="month" type="text" required>
-          </label>
           <label>Data
             <input name="date" type="text" placeholder="10/01/2026" required>
           </label>
-          <label>Observação
-            <textarea name="note"></textarea>
+          <label>Tipo
+            <select name="type" required>
+              <option value="repasse">Repasse</option>
+              <option value="devolucao">Devolução</option>
+            </select>
           </label>
-          <button class="button primary" type="submit">Salvar data</button>
+          <label>Label
+            <input name="label" type="text" placeholder="Repasse médico" required>
+          </label>
+          <button class="button primary" type="submit">Salvar evento</button>
         </form>
         <div class="admin-list" data-calendar-list></div>
       </article>

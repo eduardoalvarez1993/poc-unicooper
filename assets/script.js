@@ -81,6 +81,7 @@ function renderPage() {
   bindText();
   bindMultilineText();
   bindLinks();
+  renderFloatingWhatsapp();
   renderBenefits();
   renderAgreements();
   renderAgreementFilters();
@@ -97,11 +98,11 @@ function renderSkeletons() {
   const calendar = document.querySelector("[data-calendar]");
   if (calendar) {
     calendar.innerHTML = Array.from({ length: 4 }, () => `
-      <tr class="skeleton-row">
-        <td><span class="skeleton-line"></span></td>
-        <td><span class="skeleton-line short"></span></td>
-        <td><span class="skeleton-line"></span></td>
-      </tr>
+      <article class="calendar-month skeleton-card">
+        <span class="skeleton-line title"></span>
+        <span class="skeleton-line"></span>
+        <span class="skeleton-line short"></span>
+      </article>
     `).join("");
   }
 
@@ -173,6 +174,20 @@ function bindLinks() {
   });
 }
 
+function renderFloatingWhatsapp() {
+  const phone = onlyDigits(state.contact.whatsapp);
+  if (!phone || document.querySelector(".whatsapp-float")) return;
+
+  const link = document.createElement("a");
+  link.className = "whatsapp-float";
+  link.href = `https://wa.me/${phone}`;
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.setAttribute("aria-label", "Falar com a Unicooper pelo WhatsApp");
+  link.textContent = "WhatsApp";
+  document.body.appendChild(link);
+}
+
 function renderBenefits() {
   const container = document.querySelector("[data-benefits]");
   if (!container) return;
@@ -191,18 +206,45 @@ function renderAgreements() {
   if (!container) return;
 
   const selected = container.dataset.category || "Todos";
-  const items = selected === "Todos"
+  const query = normalizeText(document.querySelector("[data-agreement-search]")?.value || "");
+  const filteredByCategory = selected === "Todos"
     ? state.agreements
     : state.agreements.filter((item) => item.category === selected);
+  const items = query
+    ? filteredByCategory.filter((item) => agreementSearchText(item).includes(query))
+    : filteredByCategory;
 
   container.innerHTML = items.length ? items.map((item) => `
     <article class="card">
       <span class="tag">${escapeHtml(item.category || "Convênio")}</span>
       <h3>${escapeHtml(item.name)}</h3>
       <p>${escapeHtml(item.description)}</p>
+      <div class="meta-list">
+        ${item.city ? `<span>${escapeHtml(item.city)}</span>` : ""}
+        ${item.unit ? `<span>${escapeHtml(item.unit)}</span>` : ""}
+      </div>
+      ${item.rules ? `<p class="note">${escapeHtml(item.rules)}</p>` : ""}
       ${item.link ? `<div class="actions"><a class="button secondary" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">Acessar parceiro</a></div>` : ""}
     </article>
   `).join("") : '<p class="empty">Nenhum convênio ativo nesta categoria.</p>';
+}
+
+function agreementSearchText(item) {
+  return normalizeText([
+    item.name,
+    item.category,
+    item.city,
+    item.unit,
+    item.description,
+    item.rules
+  ].filter(Boolean).join(" "));
+}
+
+function normalizeText(value = "") {
+  return String(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 }
 
 function renderAgreementFilters() {
@@ -224,19 +266,77 @@ function renderAgreementFilters() {
     list.dataset.category = button.dataset.category;
     renderAgreements();
   });
+
+  const search = document.querySelector("[data-agreement-search]");
+  if (search && !search.dataset.bound) {
+    search.dataset.bound = "true";
+    search.addEventListener("input", renderAgreements);
+  }
 }
 
 function renderCalendar() {
-  const body = document.querySelector("[data-calendar]");
-  if (!body) return;
+  const container = document.querySelector("[data-calendar]");
+  if (!container) return;
 
-  body.innerHTML = state.calendar.map((item) => `
-    <tr>
-      <td>${escapeHtml(item.month)}</td>
-      <td>${escapeHtml(item.date)}</td>
-      <td>${escapeHtml(item.note || "")}</td>
-    </tr>
+  const grouped = groupCalendarByMonth(state.calendar.map(normalizeCalendarEvent));
+  container.innerHTML = Object.entries(grouped).map(([month, items], index) => `
+    <details class="calendar-month" ${index === 0 ? "open" : ""}>
+      <summary>${escapeHtml(month)}</summary>
+      <div class="calendar-events">
+        ${items.map((item) => `
+          <article class="calendar-event">
+            <time>${escapeHtml(formatEventDay(item.date))}</time>
+            <span class="event-type ${escapeAttr(item.type)}">${escapeHtml(formatEventType(item.type))}</span>
+            <strong>${escapeHtml(item.label)}</strong>
+          </article>
+        `).join("")}
+      </div>
+    </details>
   `).join("");
+}
+
+function normalizeCalendarEvent(item) {
+  return {
+    date: item.date || "",
+    type: item.type || inferEventType(item),
+    label: item.label || item.note || item.month || "Evento do calendário"
+  };
+}
+
+function inferEventType(item) {
+  const text = normalizeText(`${item.type || ""} ${item.label || ""} ${item.note || ""}`);
+  return text.includes("devol") || text.includes("inss") ? "devolucao" : "repasse";
+}
+
+function groupCalendarByMonth(items) {
+  return items
+    .filter((item) => item.date)
+    .sort((a, b) => parseCalendarDate(a.date) - parseCalendarDate(b.date))
+    .reduce((groups, item) => {
+      const month = formatEventMonth(item.date);
+      groups[month] = groups[month] || [];
+      groups[month].push(item);
+      return groups;
+    }, {});
+}
+
+function parseCalendarDate(value) {
+  const [day, month, year] = String(value).split("/").map(Number);
+  return new Date(year || 2026, (month || 1) - 1, day || 1).getTime();
+}
+
+function formatEventDay(value) {
+  return String(value).split("/").slice(0, 2).join("/");
+}
+
+function formatEventMonth(value) {
+  const [day, month, year] = String(value).split("/").map(Number);
+  const date = new Date(year || 2026, (month || 1) - 1, day || 1);
+  return date.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+}
+
+function formatEventType(value) {
+  return value === "devolucao" ? "Devolução" : "Repasse";
 }
 
 function renderContact() {
