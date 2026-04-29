@@ -51,10 +51,19 @@ const contactFields = ["address", "phone", "whatsapp", "email", "cnpj", "hours"]
 
 const ADMIN_ACCESS_CODE = "unicooper2026";
 
+const PANEL_TITLES = {
+  content: "Conteúdo geral",
+  benefits: "Vantagens",
+  agreements: "Convênios",
+  calendar: "Calendário",
+  contact: "Contato & Links"
+};
+
 document.addEventListener("DOMContentLoaded", initAdmin);
 
 async function initAdmin() {
   if (!unlockAdmin()) return;
+  initNav();
   bindForms();
   try {
     await ensureInitialData();
@@ -68,6 +77,33 @@ async function initAdmin() {
     renderOfflineList("agreements", defaults.agreements, renderAgreementItem);
     renderOfflineList("calendar", defaults.calendar, renderCalendarItem);
   }
+}
+
+function initNav() {
+  document.querySelectorAll("[data-nav]").forEach((btn) => {
+    btn.addEventListener("click", () => switchPanel(btn.dataset.nav));
+  });
+
+  const logout = document.querySelector("[data-logout]");
+  if (logout) {
+    logout.addEventListener("click", () => {
+      sessionStorage.removeItem("unicooperAdminUnlocked");
+      location.reload();
+    });
+  }
+}
+
+function switchPanel(name) {
+  document.querySelectorAll("[data-panel]").forEach((panel) => {
+    panel.hidden = panel.dataset.panel !== name;
+  });
+
+  document.querySelectorAll("[data-nav]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.nav === name);
+  });
+
+  const titleEl = document.querySelector("[data-page-title]");
+  if (titleEl) titleEl.textContent = PANEL_TITLES[name] || name;
 }
 
 function unlockAdmin() {
@@ -93,6 +129,7 @@ function unlockAdmin() {
     sessionStorage.setItem("unicooperAdminUnlocked", "true");
     lock.hidden = true;
     shell.hidden = false;
+    initNav();
     bindForms();
     ensureInitialData().then(loadAdminData).catch((error) => {
       console.warn("Conteudo remoto indisponivel no admin.", error);

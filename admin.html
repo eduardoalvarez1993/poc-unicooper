@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body class="admin-body">
+
   <section class="admin-lock" data-admin-lock>
     <form class="admin-lock-card" data-admin-login>
       <img class="brand-mark" src="https://unicooper.coop.br/wp-content/uploads/2019/02/Logo-Unicooper-logo-site.png" alt="Unicooper">
@@ -21,248 +22,318 @@
     </form>
   </section>
 
-  <main class="admin-shell">
-    <div class="admin-top">
-      <a class="brand" href="/"><img class="brand-mark" src="https://unicooper.coop.br/wp-content/uploads/2019/02/Logo-Unicooper-logo-site.png" alt="Unicooper CMS"><span>CMS</span></a>
-      <div class="actions">
-        <a class="button secondary" href="/">Ver site</a>
+  <div class="admin-shell" hidden>
+
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <img class="brand-mark" src="https://unicooper.coop.br/wp-content/uploads/2019/02/Logo-Unicooper-logo-site.png" alt="Unicooper">
+        <span class="sidebar-cms-label">CMS</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" data-nav="content" type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Conteúdo geral
+        </button>
+        <button class="sidebar-link" data-nav="benefits" type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Vantagens
+        </button>
+        <button class="sidebar-link" data-nav="agreements" type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Convênios
+        </button>
+        <button class="sidebar-link" data-nav="calendar" type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Calendário
+        </button>
+        <button class="sidebar-link" data-nav="contact" type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Contato &amp; Links
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <a class="sidebar-link" href="/" target="_blank">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Ver site
+        </a>
+        <button class="sidebar-link sidebar-logout" data-logout type="button">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-header">
+        <h1 class="admin-page-title" data-page-title>Conteúdo geral</h1>
+        <p class="status" data-status></p>
+      </header>
+
+      <div class="admin-panels">
+
+        <!-- Conteúdo geral -->
+        <section data-panel="content">
+          <div class="admin-card">
+            <div class="section-head">
+              <p class="eyebrow">Conteúdo geral</p>
+              <h2>Home, institucional e área do cooperado</h2>
+            </div>
+            <form class="form-grid" data-content-form>
+              <label>Título do hero
+                <input name="homeHeroTitle" type="text">
+              </label>
+              <label>Texto do hero
+                <textarea name="homeHeroText"></textarea>
+              </label>
+              <label>Imagem do hero - Home
+                <input name="homeHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Imagem do hero - Institucional
+                <input name="institutionalHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Imagem do hero - Vantagens
+                <input name="benefitsHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Imagem do hero - Convênios
+                <input name="agreementsHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Imagem do hero - Área do Cooperado
+                <input name="memberAreaHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Imagem do hero - Calendário
+                <input name="calendarHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Imagem do hero - Contato
+                <input name="contactHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Imagem do hero - LGPD
+                <input name="lgpdHeroImage" type="url" placeholder="https://">
+              </label>
+              <label>Título sobre a Unicooper
+                <input name="homeAboutTitle" type="text">
+              </label>
+              <label>Texto sobre a Unicooper
+                <textarea name="homeAboutText"></textarea>
+              </label>
+              <label>Texto do CTA principal
+                <input name="cooperativeCta" type="text">
+              </label>
+              <label>Negócio
+                <textarea name="business"></textarea>
+              </label>
+              <label>Quem somos
+                <textarea name="whoWeAre"></textarea>
+              </label>
+              <label>Missão
+                <textarea name="mission"></textarea>
+              </label>
+              <label>Visão
+                <textarea name="vision"></textarea>
+              </label>
+              <label>Valores
+                <textarea name="values"></textarea>
+              </label>
+              <label>Texto institucional
+                <textarea name="institutionalText"></textarea>
+              </label>
+              <label>Mandato da diretoria
+                <input name="boardTerm" type="text">
+              </label>
+              <label>Diretoria
+                <textarea name="boardMembers"></textarea>
+              </label>
+              <label>Texto da área do cooperado
+                <textarea name="memberAreaText"></textarea>
+              </label>
+              <label>URL do portal do cooperado
+                <input name="portalUrl" type="url" placeholder="https://">
+              </label>
+              <label>URL do sistema de consultório
+                <input name="clinicSystemUrl" type="url" placeholder="https://">
+              </label>
+              <label>Como se cooperar
+                <textarea name="howToJoinText"></textarea>
+              </label>
+              <label>Cadastro de Pessoa Jurídica
+                <textarea name="legalEntityText"></textarea>
+              </label>
+              <label>Acompanhamento de Repasse
+                <textarea name="transferTrackingText"></textarea>
+              </label>
+              <label>Consultório Médico
+                <textarea name="clinicText"></textarea>
+              </label>
+              <label>Download de documentos
+                <textarea name="documentsText"></textarea>
+              </label>
+              <label>SAC Unicooper
+                <textarea name="sacText"></textarea>
+              </label>
+              <label>Texto LGPD
+                <textarea name="lgpdText"></textarea>
+              </label>
+              <label>Link Requisição do Titular
+                <input name="lgpdRequestUrl" type="url" placeholder="https://">
+              </label>
+              <label>Link Canal de Denúncia
+                <input name="lgpdReportUrl" type="url" placeholder="https://">
+              </label>
+              <button class="button primary" type="submit">Salvar conteúdo</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Vantagens -->
+        <section data-panel="benefits" hidden>
+          <div class="cms-split">
+            <div class="admin-card">
+              <div class="section-head">
+                <p class="eyebrow">Vantagens</p>
+                <h2>Adicionar ou editar</h2>
+              </div>
+              <form class="form-grid" data-benefit-form>
+                <input name="id" type="hidden">
+                <label>Título
+                  <input name="title" type="text" required>
+                </label>
+                <label>Descrição
+                  <textarea name="description" required></textarea>
+                </label>
+                <button class="button primary" type="submit">Salvar vantagem</button>
+              </form>
+            </div>
+            <div class="admin-card">
+              <h3 class="cms-list-title">Cadastradas</h3>
+              <div class="admin-list" data-benefits-list></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Convênios -->
+        <section data-panel="agreements" hidden>
+          <div class="cms-split">
+            <div class="admin-card">
+              <div class="section-head">
+                <p class="eyebrow">Convênios</p>
+                <h2>Parceiros e status</h2>
+              </div>
+              <form class="form-grid" data-agreement-form>
+                <input name="id" type="hidden">
+                <label>Nome
+                  <input name="name" type="text" required>
+                </label>
+                <label>Título da seção
+                  <input name="section" type="text" placeholder="Ex.: Convênios faturados pela Unicooper - Belo Horizonte / Betim" required>
+                </label>
+                <label>Categoria
+                  <input name="category" type="text" required>
+                </label>
+                <label>Cidade ou região
+                  <input name="city" type="text">
+                </label>
+                <label>Unidade
+                  <input name="unit" type="text">
+                </label>
+                <label>
+                  <span>Permite instrumentação cirúrgica</span>
+                  <input name="allowsInstrumentation" type="checkbox">
+                </label>
+                <label>
+                  <span>Auditoria in loco</span>
+                  <input name="requiresOnsiteAudit" type="checkbox">
+                </label>
+                <label>Imagem
+                  <input name="imageUrl" type="url" placeholder="https://">
+                </label>
+                <label>Descrição
+                  <textarea name="description" required></textarea>
+                </label>
+                <label>Regras e observações
+                  <textarea name="rules"></textarea>
+                </label>
+                <label>Link externo
+                  <input name="link" type="url" placeholder="https://">
+                </label>
+                <label>
+                  <span>Ativo</span>
+                  <input name="active" type="checkbox" checked>
+                </label>
+                <button class="button primary" type="submit">Salvar convênio</button>
+              </form>
+            </div>
+            <div class="admin-card">
+              <h3 class="cms-list-title">Cadastrados</h3>
+              <div class="admin-list" data-agreements-list></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Calendário -->
+        <section data-panel="calendar" hidden>
+          <div class="cms-split">
+            <div class="admin-card">
+              <div class="section-head">
+                <p class="eyebrow">Calendário</p>
+                <h2>Datas de repasse</h2>
+              </div>
+              <form class="form-grid" data-calendar-form>
+                <input name="id" type="hidden">
+                <label>Data
+                  <input name="date" type="text" placeholder="10/01/2026" required>
+                </label>
+                <label>Tipo
+                  <select name="type" required>
+                    <option value="repasse">Repasse</option>
+                    <option value="devolucao">Devolução</option>
+                  </select>
+                </label>
+                <label>Label
+                  <input name="label" type="text" placeholder="Repasse médico" required>
+                </label>
+                <button class="button primary" type="submit">Salvar evento</button>
+              </form>
+            </div>
+            <div class="admin-card">
+              <h3 class="cms-list-title">Datas cadastradas</h3>
+              <div class="admin-list" data-calendar-list></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contato & Links -->
+        <section data-panel="contact" hidden>
+          <div class="admin-card admin-card--narrow">
+            <div class="section-head">
+              <p class="eyebrow">Contato e links</p>
+              <h2>Canais oficiais</h2>
+            </div>
+            <form class="form-grid" data-contact-form>
+              <label>Endereço
+                <input name="address" type="text">
+              </label>
+              <label>Telefone
+                <input name="phone" type="text">
+              </label>
+              <label>WhatsApp com DDI
+                <input name="whatsapp" type="text" placeholder="5511999999999">
+              </label>
+              <label>E-mail
+                <input name="email" type="email">
+              </label>
+              <label>CNPJ
+                <input name="cnpj" type="text">
+              </label>
+              <label>Horários de atendimento
+                <textarea name="hours"></textarea>
+              </label>
+              <button class="button primary" type="submit">Salvar contato</button>
+            </form>
+          </div>
+        </section>
+
       </div>
     </div>
-
-    <p class="status" data-status></p>
-
-    <section class="admin-grid">
-      <article class="admin-panel wide">
-        <div class="section-head">
-          <p class="eyebrow">Conteúdo geral</p>
-          <h2>Home, institucional e área do cooperado</h2>
-        </div>
-        <form class="form-grid" data-content-form>
-          <label>Título do hero
-            <input name="homeHeroTitle" type="text">
-          </label>
-          <label>Texto do hero
-            <textarea name="homeHeroText"></textarea>
-          </label>
-          <label>Imagem do hero - Home
-            <input name="homeHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Imagem do hero - Institucional
-            <input name="institutionalHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Imagem do hero - Vantagens
-            <input name="benefitsHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Imagem do hero - Convênios
-            <input name="agreementsHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Imagem do hero - Área do Cooperado
-            <input name="memberAreaHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Imagem do hero - Calendário
-            <input name="calendarHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Imagem do hero - Contato
-            <input name="contactHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Imagem do hero - LGPD
-            <input name="lgpdHeroImage" type="url" placeholder="https://">
-          </label>
-          <label>Título sobre a Unicooper
-            <input name="homeAboutTitle" type="text">
-          </label>
-          <label>Texto sobre a Unicooper
-            <textarea name="homeAboutText"></textarea>
-          </label>
-          <label>Texto do CTA principal
-            <input name="cooperativeCta" type="text">
-          </label>
-          <label>Negócio
-            <textarea name="business"></textarea>
-          </label>
-          <label>Quem somos
-            <textarea name="whoWeAre"></textarea>
-          </label>
-          <label>Missão
-            <textarea name="mission"></textarea>
-          </label>
-          <label>Visão
-            <textarea name="vision"></textarea>
-          </label>
-          <label>Valores
-            <textarea name="values"></textarea>
-          </label>
-          <label>Texto institucional
-            <textarea name="institutionalText"></textarea>
-          </label>
-          <label>Mandato da diretoria
-            <input name="boardTerm" type="text">
-          </label>
-          <label>Diretoria
-            <textarea name="boardMembers"></textarea>
-          </label>
-          <label>Texto da área do cooperado
-            <textarea name="memberAreaText"></textarea>
-          </label>
-          <label>URL do portal do cooperado
-            <input name="portalUrl" type="url" placeholder="https://">
-          </label>
-          <label>URL do sistema de consultório
-            <input name="clinicSystemUrl" type="url" placeholder="https://">
-          </label>
-          <label>Como se cooperar
-            <textarea name="howToJoinText"></textarea>
-          </label>
-          <label>Cadastro de Pessoa Jurídica
-            <textarea name="legalEntityText"></textarea>
-          </label>
-          <label>Acompanhamento de Repasse
-            <textarea name="transferTrackingText"></textarea>
-          </label>
-          <label>Consultório Médico
-            <textarea name="clinicText"></textarea>
-          </label>
-          <label>Download de documentos
-            <textarea name="documentsText"></textarea>
-          </label>
-          <label>SAC Unicooper
-            <textarea name="sacText"></textarea>
-          </label>
-          <label>Texto LGPD
-            <textarea name="lgpdText"></textarea>
-          </label>
-          <label>Link Requisição do Titular
-            <input name="lgpdRequestUrl" type="url" placeholder="https://">
-          </label>
-          <label>Link Canal de Denúncia
-            <input name="lgpdReportUrl" type="url" placeholder="https://">
-          </label>
-          <button class="button primary" type="submit">Salvar conteúdo</button>
-        </form>
-      </article>
-
-      <article class="admin-panel">
-        <div class="section-head">
-          <p class="eyebrow">Vantagens</p>
-          <h2>Adicionar ou editar</h2>
-        </div>
-        <form class="form-grid" data-benefit-form>
-          <input name="id" type="hidden">
-          <label>Título
-            <input name="title" type="text" required>
-          </label>
-          <label>Descrição
-            <textarea name="description" required></textarea>
-          </label>
-          <button class="button primary" type="submit">Salvar vantagem</button>
-        </form>
-        <div class="admin-list" data-benefits-list></div>
-      </article>
-
-      <article class="admin-panel">
-        <div class="section-head">
-          <p class="eyebrow">Convênios</p>
-          <h2>Parceiros e status</h2>
-        </div>
-        <form class="form-grid" data-agreement-form>
-          <input name="id" type="hidden">
-          <label>Nome
-            <input name="name" type="text" required>
-          </label>
-          <label>Título da seção
-            <input name="section" type="text" placeholder="Ex.: Convênios faturados pela Unicooper - Belo Horizonte / Betim" required>
-          </label>
-          <label>Categoria
-            <input name="category" type="text" required>
-          </label>
-          <label>Cidade ou região
-            <input name="city" type="text">
-          </label>
-          <label>Unidade
-            <input name="unit" type="text">
-          </label>
-          <label>
-            <span>Permite instrumentação cirúrgica</span>
-            <input name="allowsInstrumentation" type="checkbox">
-          </label>
-          <label>
-            <span>Auditoria in loco</span>
-            <input name="requiresOnsiteAudit" type="checkbox">
-          </label>
-          <label>Imagem
-            <input name="imageUrl" type="url" placeholder="https://">
-          </label>
-          <label>Descrição
-            <textarea name="description" required></textarea>
-          </label>
-          <label>Regras e observações
-            <textarea name="rules"></textarea>
-          </label>
-          <label>Link externo
-            <input name="link" type="url" placeholder="https://">
-          </label>
-          <label>
-            <span>Ativo</span>
-            <input name="active" type="checkbox" checked>
-          </label>
-          <button class="button primary" type="submit">Salvar convênio</button>
-        </form>
-        <div class="admin-list" data-agreements-list></div>
-      </article>
-
-      <article class="admin-panel">
-        <div class="section-head">
-          <p class="eyebrow">Calendário</p>
-          <h2>Datas de repasse</h2>
-        </div>
-        <form class="form-grid" data-calendar-form>
-          <input name="id" type="hidden">
-          <label>Data
-            <input name="date" type="text" placeholder="10/01/2026" required>
-          </label>
-          <label>Tipo
-            <select name="type" required>
-              <option value="repasse">Repasse</option>
-              <option value="devolucao">Devolução</option>
-            </select>
-          </label>
-          <label>Label
-            <input name="label" type="text" placeholder="Repasse médico" required>
-          </label>
-          <button class="button primary" type="submit">Salvar evento</button>
-        </form>
-        <div class="admin-list" data-calendar-list></div>
-      </article>
-
-      <article class="admin-panel">
-        <div class="section-head">
-          <p class="eyebrow">Contato e links</p>
-          <h2>Canais oficiais</h2>
-        </div>
-        <form class="form-grid" data-contact-form>
-          <label>Endereço
-            <input name="address" type="text">
-          </label>
-          <label>Telefone
-            <input name="phone" type="text">
-          </label>
-          <label>WhatsApp com DDI
-            <input name="whatsapp" type="text" placeholder="5511999999999">
-          </label>
-          <label>E-mail
-            <input name="email" type="email">
-          </label>
-          <label>CNPJ
-            <input name="cnpj" type="text">
-          </label>
-          <label>Horários de atendimento
-            <textarea name="hours"></textarea>
-          </label>
-          <button class="button primary" type="submit">Salvar contato</button>
-        </form>
-      </article>
-    </section>
-  </main>
+  </div>
 
   <script type="module" src="assets/admin.js"></script>
 </body>

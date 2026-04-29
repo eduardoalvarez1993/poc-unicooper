@@ -710,17 +710,10 @@ tr:last-child td {
 }
 
 .admin-body {
-  background: #f4f1ea;
+  background: #f0f2f5;
 }
 
-.admin-shell {
-  display: grid;
-  gap: 18px;
-  margin: 0 auto;
-  max-width: 1220px;
-  padding: 22px 16px 60px;
-}
-
+/* Lock screen */
 .admin-lock {
   align-items: center;
   display: grid;
@@ -737,7 +730,7 @@ tr:last-child td {
   gap: 14px;
   margin: 0 auto;
   max-width: 420px;
-  padding: 24px;
+  padding: 32px;
   width: 100%;
 }
 
@@ -746,25 +739,157 @@ tr:last-child td {
   width: 170px;
 }
 
-.admin-top {
-  align-items: center;
+/* Shell */
+.admin-shell {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  background: var(--brand-dark);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  width: 240px;
+}
+
+.sidebar-brand {
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 10px;
+  padding: 20px 18px;
+}
+
+.sidebar-brand .brand-mark {
+  filter: brightness(0) invert(1);
+  height: 34px;
+  width: auto;
+}
+
+.sidebar-cms-label {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.sidebar-link {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 10px;
+  padding: 11px 18px;
+  text-align: left;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.sidebar-link.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+  font-weight: 700;
+}
+
+.sidebar-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.sidebar-logout {
+  color: rgba(255, 110, 110, 0.8);
+}
+
+.sidebar-logout:hover {
+  color: #ff8080;
+}
+
+/* Main area */
+.admin-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-header {
+  align-items: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 16px;
   justify-content: space-between;
+  padding: 16px 28px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.admin-grid {
-  display: grid;
-  gap: 18px;
+.admin-page-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
 }
 
-.admin-panel {
+.admin-panels {
+  flex: 1;
+  padding: 28px;
+}
+
+/* Cards dentro dos paineis */
+.admin-card {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 0 10px 28px rgba(31, 61, 55, 0.08);
-  padding: 18px;
+  box-shadow: 0 4px 18px rgba(24, 54, 80, 0.07);
+  padding: 24px;
+}
+
+.admin-card--narrow {
+  max-width: 580px;
+}
+
+.cms-split {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+}
+
+.cms-list-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
 }
 
 .form-grid {
@@ -938,12 +1063,8 @@ textarea {
     grid-template-columns: minmax(260px, 1.4fr) repeat(3, minmax(150px, 0.7fr));
   }
 
-  .admin-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .admin-panel.wide {
-    grid-column: 1 / -1;
+  .cms-split {
+    grid-template-columns: minmax(320px, 420px) 1fr;
   }
 }
 
@@ -961,5 +1082,38 @@ textarea {
 
   .event-type {
     width: max-content;
+  }
+}
+
+/* Admin responsivo */
+@media (max-width: 759px) {
+  .admin-shell {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    min-height: auto;
+    position: static;
+    width: 100%;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 6px 8px;
+  }
+
+  .sidebar-link {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .cms-split {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-panels {
+    padding: 16px;
   }
 }
