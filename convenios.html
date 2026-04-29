@@ -44,10 +44,30 @@
           <p class="eyebrow">Parceiros</p>
           <h2>Convênios disponíveis</h2>
         </div>
-        <label class="search-field">Buscar convênio
-          <input type="search" placeholder="Digite nome, seção, cidade, unidade ou regra" data-agreement-search>
-        </label>
-        <div class="filters" data-agreement-filters></div>
+        <div class="agreement-filters">
+          <label class="search-field">Buscar convênio
+            <input type="search" placeholder="Digite nome, local, unidade ou regra" data-agreement-search>
+          </label>
+          <label>Local
+            <select data-agreement-location>
+              <option value="Todos">Todos</option>
+            </select>
+          </label>
+          <label>Permite instrumentação cirúrgica
+            <select data-agreement-instrumentation>
+              <option value="Todos">Todos</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </label>
+          <label>Auditoria in loco
+            <select data-agreement-audit>
+              <option value="Todos">Todos</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </label>
+        </div>
         <div class="grid cards" data-agreements></div>
       </div>
     </section>

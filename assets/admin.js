@@ -152,7 +152,7 @@ async function seedCollection(collectionName, items) {
 function hasOldSeedData(collectionName, items) {
   const markers = {
     benefits: (item) => item.title === "Atendimento próximo",
-    agreements: (item) => item.name === "Clínica Vida Plena" || item.name === "Convênios de consultório em Belo Horizonte" || !("section" in item) || !("imageUrl" in item),
+    agreements: (item) => item.name === "Clínica Vida Plena" || item.name === "Convênios de consultório em Belo Horizonte" || !("section" in item) || !("imageUrl" in item) || !("allowsInstrumentation" in item) || !("requiresOnsiteAudit" in item),
     calendar: (item) => item.month === "Janeiro" && item.note === "Repasse regular" || item.month === "Calendário de Repasse 2026"
   };
 
@@ -207,6 +207,8 @@ async function saveAgreement(event) {
   event.preventDefault();
   const form = event.currentTarget;
   const data = formDataToObject(form, ["name", "section", "category", "city", "unit", "imageUrl", "description", "rules", "link"]);
+  data.allowsInstrumentation = form.elements.allowsInstrumentation.checked;
+  data.requiresOnsiteAudit = form.elements.requiresOnsiteAudit.checked;
   data.active = form.elements.active.checked;
   await upsertCollectionItem("agreements", form.elements.id.value, data);
   resetForm(form);
@@ -304,6 +306,7 @@ function renderAgreementItem(item) {
         <strong>${escapeHtml(item.name)}</strong>
         <p>${escapeHtml(item.section || "Convênios")} · ${escapeHtml(item.category)} · ${item.active === false ? "Inativo" : "Ativo"}</p>
         <p>${escapeHtml([item.city, item.unit].filter(Boolean).join(" · "))}</p>
+        <p>Instrumentação cirúrgica: ${item.allowsInstrumentation ? "Sim" : "Não"} · Auditoria in loco: ${item.requiresOnsiteAudit ? "Sim" : "Não"}</p>
         <p>${escapeHtml(item.description)}</p>
         ${item.imageUrl ? `<p>Imagem: ${escapeHtml(item.imageUrl)}</p>` : ""}
         ${item.rules ? `<p>${escapeHtml(item.rules)}</p>` : ""}

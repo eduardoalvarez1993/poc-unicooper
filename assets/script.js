@@ -204,36 +204,25 @@ function renderAgreements() {
   const container = document.querySelector("[data-agreements]");
   if (!container) return;
 
-  const selected = container.dataset.category || "Todos";
   const query = normalizeText(document.querySelector("[data-agreement-search]")?.value || "");
+  const location = document.querySelector("[data-agreement-location]")?.value || "Todos";
+  const instrumentation = document.querySelector("[data-agreement-instrumentation]")?.value || "Todos";
+  const audit = document.querySelector("[data-agreement-audit]")?.value || "Todos";
   const limit = Number(container.dataset.limit || 0);
-  const filteredByCategory = selected === "Todos"
-    ? state.agreements
-    : state.agreements.filter((item) => item.category === selected);
-  const filteredItems = query
-    ? filteredByCategory.filter((item) => agreementSearchText(item).includes(query))
-    : filteredByCategory;
+  const filteredItems = state.agreements.filter((item) => {
+    const matchesQuery = !query || agreementSearchText(item).includes(query);
+    const matchesLocation = location === "Todos" || agreementLocations(item).some((itemLocation) => normalizeText(itemLocation) === normalizeText(location));
+    const matchesInstrumentation = matchesBooleanFilter(item.allowsInstrumentation, instrumentation);
+    const matchesAudit = matchesBooleanFilter(item.requiresOnsiteAudit, audit);
+    return matchesQuery && matchesLocation && matchesInstrumentation && matchesAudit;
+  });
   const items = limit ? filteredItems.slice(0, limit) : filteredItems;
 
   if (!items.length) {
-    container.innerHTML = '<p class="empty">Nenhum convênio ativo nesta categoria.</p>';
+    container.innerHTML = '<p class="empty">Nenhum convênio encontrado.</p>';
     return;
   }
-
-  if (limit) {
-    container.innerHTML = items.map(renderAgreementCard).join("");
-    return;
-  }
-
-  const grouped = groupAgreementsBySection(items);
-  container.innerHTML = Object.entries(grouped).map(([section, sectionItems]) => `
-    <section class="agreement-section">
-      <h3>${escapeHtml(section)}</h3>
-      <div class="grid cards">
-        ${sectionItems.map(renderAgreementCard).join("")}
-      </div>
-    </section>
-  `).join("");
+  container.innerHTML = items.map(renderAgreementCard).join("");
 }
 
 function renderAgreementCard(item) {
@@ -246,6 +235,8 @@ function renderAgreementCard(item) {
       <div class="meta-list">
         ${item.city ? `<span>${escapeHtml(item.city)}</span>` : ""}
         ${item.unit ? `<span>${escapeHtml(item.unit)}</span>` : ""}
+        <span>Instrumentação: ${item.allowsInstrumentation ? "Sim" : "Não"}</span>
+        <span>Auditoria in loco: ${item.requiresOnsiteAudit ? "Sim" : "Não"}</span>
       </div>
       ${item.rules ? `<p class="note">${escapeHtml(item.rules)}</p>` : ""}
       ${item.link ? `<div class="actions"><a class="button secondary partner-button" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">Acessar parceiro</a></div>` : ""}
@@ -262,15 +253,6 @@ function renderAgreementImage(item) {
       <img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(item.name)}" loading="lazy">
     </figure>
   `;
-}
-
-function groupAgreementsBySection(items) {
-  return items.reduce((groups, item) => {
-    const section = item.section || "Convênios";
-    groups[section] = groups[section] || [];
-    groups[section].push(item);
-    return groups;
-  }, {});
 }
 
 function agreementSearchText(item) {
@@ -293,30 +275,39 @@ function normalizeText(value = "") {
 }
 
 function renderAgreementFilters() {
-  const container = document.querySelector("[data-agreement-filters]");
   const list = document.querySelector("[data-agreements]");
-  if (!container || !list) return;
+  if (!list) return;
 
-  const categories = ["Todos", ...new Set(state.agreements.map((item) => item.category).filter(Boolean))];
-  container.innerHTML = categories.map((category, index) => `
-    <button class="filter-button ${index === 0 ? "active" : ""}" type="button" data-category="${escapeAttr(category)}">${escapeHtml(category)}</button>
-  `).join("");
-
-  container.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-category]");
-    if (!button) return;
-
-    container.querySelectorAll(".filter-button").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    list.dataset.category = button.dataset.category;
-    renderAgreements();
-  });
-
-  const search = document.querySelector("[data-agreement-search]");
-  if (search && !search.dataset.bound) {
-    search.dataset.bound = "true";
-    search.addEventListener("input", renderAgreements);
+  const locationSelect = document.querySelector("[data-agreement-location]");
+  if (locationSelect) {
+    const locations = uniqueAgreementLocations(state.agreements);
+    locationSelect.innerHTML = ["Todos", ...locations].map((location) => `
+      <option value="${escapeAttr(location)}">${escapeHtml(location)}</option>
+    `).join("");
   }
+
+  document.querySelectorAll("[data-agreement-search], [data-agreement-location], [data-agreement-instrumentation], [data-agreement-audit]").forEach((field) => {
+    if (field.dataset.bound) return;
+    field.dataset.bound = "true";
+    field.addEventListener(field.matches("input") ? "input" : "change", renderAgreements);
+  });
+}
+
+function matchesBooleanFilter(value, filter) {
+  if (filter === "Todos") return true;
+  return filter === "Sim" ? Boolean(value) : !Boolean(value);
+}
+
+function uniqueAgreementLocations(items) {
+  return [...new Set(items.flatMap(agreementLocations).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, "pt-BR"));
+}
+
+function agreementLocations(item) {
+  return String(item.city || "")
+    .split(/,|\se\s|\/|;/i)
+    .map((location) => location.trim())
+    .filter(Boolean);
 }
 
 function isSafeExternalUrl(value = "") {
