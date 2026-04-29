@@ -45,14 +45,14 @@ const defaults = {
     hours: "Segunda a quinta-feira: 07:00 às 18:00. Sexta-feira: 07:00 às 17:00. Exceto feriados."
   },
   benefits: [
-    { title: "Assessoria jurídica", description: "Assessoria jurídica para o cooperado sem acréscimo na taxa administrativa, com mais segurança nas relações jurídicas e apoio na redução de riscos profissionais." },
-    { title: "Plano de saúde - Seguros Unimed", description: "Condições diferenciadas para médicos cooperados, incluindo atendimento no Hospital Mater Dei. Consulte condições." },
-    { title: "Greenbel", description: "Parceria em energia solar para promover economia real e benefícios sustentáveis aos cooperados." },
-    { title: "Certificado digital", description: "Disponibilização de certificado digital ao cooperado sem acréscimo na taxa administrativa." },
-    { title: "Comprometimento", description: "Gestão comprometida com repasse justo e relacionamento próximo com os cooperados." },
-    { title: "Segurança", description: "A cooperativa cuida da parte burocrática com convênios após o recebimento da guia pelo cooperado." },
-    { title: "Transparência", description: "Portal exclusivo para acompanhar cobranças e guias cobradas com facilidade." },
-    { title: "Agilidade", description: "Uso de recursos tecnológicos para executar processos complexos com assertividade e rapidez." }
+    { title: "Assessoria jurídica", description: "Assessoria jurídica para o cooperado sem acréscimo na taxa administrativa, com mais segurança nas relações jurídicas e apoio na redução de riscos profissionais.", imageUrl: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&h=500&fit=crop&auto=format&q=80" },
+    { title: "Plano de saúde - Seguros Unimed", description: "Condições diferenciadas para médicos cooperados, incluindo atendimento no Hospital Mater Dei. Consulte condições.", imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=500&fit=crop&auto=format&q=80" },
+    { title: "Greenbel", description: "Parceria em energia solar para promover economia real e benefícios sustentáveis aos cooperados.", imageUrl: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=500&fit=crop&auto=format&q=80" },
+    { title: "Certificado digital", description: "Disponibilização de certificado digital ao cooperado sem acréscimo na taxa administrativa.", imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=500&fit=crop&auto=format&q=80" },
+    { title: "Comprometimento", description: "Gestão comprometida com repasse justo e relacionamento próximo com os cooperados.", imageUrl: "https://images.unsplash.com/photo-1521737604082-14b2d5d4df0d?w=800&h=500&fit=crop&auto=format&q=80" },
+    { title: "Segurança", description: "A cooperativa cuida da parte burocrática com convênios após o recebimento da guia pelo cooperado.", imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=500&fit=crop&auto=format&q=80" },
+    { title: "Transparência", description: "Portal exclusivo para acompanhar cobranças e guias cobradas com facilidade.", imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop&auto=format&q=80" },
+    { title: "Agilidade", description: "Uso de recursos tecnológicos para executar processos complexos com assertividade e rapidez.", imageUrl: "https://images.unsplash.com/photo-1554774853-719586f82d77?w=800&h=500&fit=crop&auto=format&q=80" }
   ],
   agreements: [
     { name: "Consultórios Belo Horizonte", section: "Convênios que aceitam cobrança de atendimentos em consultórios", category: "Consultórios", city: "Belo Horizonte", unit: "Consultório médico", allowsInstrumentation: false, requiresOnsiteAudit: false, imageUrl: "", description: "Atendimentos em consultórios com cobrança orientada pela Unicooper.", rules: "Confirme autorização, elegibilidade e regras de retorno antes do atendimento.", link: "https://unicooper.coop.br/convenios/", active: true },

@@ -366,6 +366,20 @@ p {
   transform: translate(-50%, -50%);
 }
 
+.benefit-media.has-image::after {
+  display: none;
+}
+
+.benefit-media img {
+  display: block;
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
 .about-feature {
   align-items: stretch;
   display: grid;

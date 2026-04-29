@@ -231,13 +231,19 @@ function renderBenefits() {
   const container = document.querySelector("[data-benefits]");
   if (!container) return;
 
-  container.innerHTML = state.benefits.map((item) => `
-    <article class="card">
-      <div class="benefit-media" aria-hidden="true"></div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.description)}</p>
-    </article>
-  `).join("");
+  container.innerHTML = state.benefits.map((item) => {
+    const hasImage = isSafeExternalUrl(item.imageUrl);
+    const media = hasImage
+      ? `<div class="benefit-media has-image" aria-hidden="true"><img src="${escapeAttr(item.imageUrl)}" alt="" loading="lazy"></div>`
+      : `<div class="benefit-media" aria-hidden="true"></div>`;
+    return `
+      <article class="card">
+        ${media}
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.description)}</p>
+      </article>
+    `;
+  }).join("");
 }
 
 function renderAgreements() {

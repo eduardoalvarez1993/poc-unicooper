@@ -264,7 +264,7 @@ async function saveDirector(event) {
 async function saveBenefit(event) {
   event.preventDefault();
   const form = event.currentTarget;
-  const data = formDataToObject(form, ["title", "description"]);
+  const data = formDataToObject(form, ["title", "description", "imageUrl"]);
   await upsertCollectionItem("benefits", form.elements.id.value, data);
   resetForm(form);
   await renderCollection("benefits", renderBenefitItem);
