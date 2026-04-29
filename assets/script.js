@@ -207,12 +207,14 @@ function renderAgreements() {
 
   const selected = container.dataset.category || "Todos";
   const query = normalizeText(document.querySelector("[data-agreement-search]")?.value || "");
+  const limit = Number(container.dataset.limit || 0);
   const filteredByCategory = selected === "Todos"
     ? state.agreements
     : state.agreements.filter((item) => item.category === selected);
-  const items = query
+  const filteredItems = query
     ? filteredByCategory.filter((item) => agreementSearchText(item).includes(query))
     : filteredByCategory;
+  const items = limit ? filteredItems.slice(0, limit) : filteredItems;
 
   container.innerHTML = items.length ? items.map((item) => `
     <article class="card">
