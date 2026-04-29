@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="10" fill="#fff"/>
+  <!-- U shape with upward arrow -->
+  <path d="M8 14 L8 38 Q8 52 22 52 Q36 52 36 38 L36 14" stroke="#1a5fa8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="14,22 8,14 2,22" stroke="#1a5fa8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- C shape with rightward arrow -->
+  <path d="M56 20 Q56 12 48 12 Q36 12 36 28 Q36 44 48 44 Q56 44 56 36" stroke="#1a5fa8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="48,30 56,36 48,42" stroke="#1a5fa8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
