@@ -312,6 +312,29 @@ p {
   transform: translateY(-3px);
 }
 
+.benefit-media {
+  aspect-ratio: 16 / 10;
+  background:
+    linear-gradient(135deg, rgba(24, 113, 183, 0.14), rgba(24, 54, 80, 0.05)),
+    var(--surface-soft);
+  border: 1px dashed rgba(24, 54, 80, 0.2);
+  border-radius: 8px;
+  margin: 0 0 18px;
+  overflow: hidden;
+  position: relative;
+}
+
+.benefit-media::after {
+  color: rgba(24, 54, 80, 0.56);
+  content: "Imagem";
+  font-size: 12px;
+  font-weight: 900;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .about-feature {
   align-items: stretch;
   display: grid;

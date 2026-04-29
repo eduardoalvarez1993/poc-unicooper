@@ -195,6 +195,7 @@ function renderBenefits() {
   container.innerHTML = state.benefits.map((item) => `
     <article class="card">
       <span class="tag">Benefício</span>
+      <div class="benefit-media" aria-hidden="true"></div>
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.description)}</p>
     </article>
