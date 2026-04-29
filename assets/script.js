@@ -184,7 +184,7 @@ function renderFloatingWhatsapp() {
   link.target = "_blank";
   link.rel = "noopener";
   link.setAttribute("aria-label", "Falar com a Unicooper pelo WhatsApp");
-  link.textContent = "WhatsApp";
+  link.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="" aria-hidden="true">';
   document.body.appendChild(link);
 }
 
