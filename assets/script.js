@@ -217,9 +217,32 @@ function renderAgreements() {
     : filteredByCategory;
   const items = limit ? filteredItems.slice(0, limit) : filteredItems;
 
-  container.innerHTML = items.length ? items.map((item) => `
+  if (!items.length) {
+    container.innerHTML = '<p class="empty">Nenhum convênio ativo nesta categoria.</p>';
+    return;
+  }
+
+  if (limit) {
+    container.innerHTML = items.map(renderAgreementCard).join("");
+    return;
+  }
+
+  const grouped = groupAgreementsBySection(items);
+  container.innerHTML = Object.entries(grouped).map(([section, sectionItems]) => `
+    <section class="agreement-section">
+      <h3>${escapeHtml(section)}</h3>
+      <div class="grid cards">
+        ${sectionItems.map(renderAgreementCard).join("")}
+      </div>
+    </section>
+  `).join("");
+}
+
+function renderAgreementCard(item) {
+  return `
     <article class="card">
       <span class="tag">${escapeHtml(item.category || "Convênio")}</span>
+      ${renderAgreementImage(item)}
       <h3>${escapeHtml(item.name)}</h3>
       <p>${escapeHtml(item.description)}</p>
       <div class="meta-list">
@@ -229,12 +252,33 @@ function renderAgreements() {
       ${item.rules ? `<p class="note">${escapeHtml(item.rules)}</p>` : ""}
       ${item.link ? `<div class="actions"><a class="button secondary" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">Acessar parceiro</a></div>` : ""}
     </article>
-  `).join("") : '<p class="empty">Nenhum convênio ativo nesta categoria.</p>';
+  `;
+}
+
+function renderAgreementImage(item) {
+  const imageUrl = isSafeExternalUrl(item.imageUrl) ? item.imageUrl : "";
+  if (!imageUrl) return '<div class="agreement-media placeholder" aria-hidden="true"></div>';
+
+  return `
+    <figure class="agreement-media">
+      <img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(item.name)}" loading="lazy">
+    </figure>
+  `;
+}
+
+function groupAgreementsBySection(items) {
+  return items.reduce((groups, item) => {
+    const section = item.section || "Convênios";
+    groups[section] = groups[section] || [];
+    groups[section].push(item);
+    return groups;
+  }, {});
 }
 
 function agreementSearchText(item) {
   return normalizeText([
     item.name,
+    item.section,
     item.category,
     item.city,
     item.unit,
@@ -274,6 +318,15 @@ function renderAgreementFilters() {
   if (search && !search.dataset.bound) {
     search.dataset.bound = "true";
     search.addEventListener("input", renderAgreements);
+  }
+}
+
+function isSafeExternalUrl(value = "") {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
   }
 }
 
