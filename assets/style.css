@@ -593,8 +593,7 @@ p {
 
 .agreement-thumb img {
   height: 100%;
-  object-fit: contain;
-  padding: 10px;
+  object-fit: cover;
   width: 100%;
 }
 
