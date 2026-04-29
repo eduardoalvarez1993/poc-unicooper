@@ -439,7 +439,16 @@ p {
     var(--surface-soft);
   border: 1px solid var(--line);
   border-radius: var(--radius);
+  margin: 0;
   overflow: hidden;
+}
+
+.director-photo img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  width: 100%;
 }
 
 .director-card h3 {
